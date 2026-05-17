@@ -29,10 +29,10 @@ create table public.cp_clients (
 );
 
 -- Invoices table
-create table public.invoices (
+create table public.cp_invoices (
   id uuid primary key default uuid_generate_v4(),
-  creator_id uuid not null references public.users(id) on delete cascade,
-  client_id uuid references public.clients(id) on delete set null,
+  creator_id uuid not null references public.cp_users(id) on delete cascade,
+  client_id uuid references public.cp_clients(id) on delete set null,
   invoice_number text not null unique,
   line_items jsonb not null default '[]',
   subtotal numeric(12,2) not null default 0,
@@ -48,10 +48,10 @@ create table public.invoices (
 );
 
 -- Transactions table
-create table public.transactions (
+create table public.cp_transactions (
   id uuid primary key default uuid_generate_v4(),
-  invoice_id uuid not null references public.invoices(id) on delete cascade,
-  creator_id uuid not null references public.users(id) on delete cascade,
+  invoice_id uuid not null references public.cp_invoices(id) on delete cascade,
+  creator_id uuid not null references public.cp_users(id) on delete cascade,
   amount numeric(12,2) not null,
   platform_fee_amount numeric(12,2) not null,
   creator_amount numeric(12,2) not null,
@@ -63,9 +63,9 @@ create table public.transactions (
 );
 
 -- Withdrawals table
-create table public.withdrawals (
+create table public.cp_withdrawals (
   id uuid primary key default uuid_generate_v4(),
-  creator_id uuid not null references public.users(id) on delete cascade,
+  creator_id uuid not null references public.cp_users(id) on delete cascade,
   amount numeric(12,2) not null,
   paystack_transfer_code text,
   status text not null default 'pending' check (status in ('pending','success','failed','reversed')),
@@ -73,10 +73,10 @@ create table public.withdrawals (
 );
 
 -- Advances table
-create table public.advances (
+create table public.cp_advances (
   id uuid primary key default uuid_generate_v4(),
-  invoice_id uuid not null references public.invoices(id) on delete cascade,
-  creator_id uuid not null references public.users(id) on delete cascade,
+  invoice_id uuid not null references public.cp_invoices(id) on delete cascade,
+  creator_id uuid not null references public.cp_users(id) on delete cascade,
   advance_amount numeric(12,2) not null,
   fee_amount numeric(12,2) not null,
   status text not null default 'requested' check (status in ('requested','approved','paid_out','repaid')),
@@ -88,55 +88,55 @@ create table public.advances (
 -- Row Level Security Policies
 -- ============================================================
 
-alter table public.users enable row level security;
-alter table public.clients enable row level security;
-alter table public.invoices enable row level security;
-alter table public.transactions enable row level security;
-alter table public.withdrawals enable row level security;
-alter table public.advances enable row level security;
+alter table public.cp_users enable row level security;
+alter table public.cp_clients enable row level security;
+alter table public.cp_invoices enable row level security;
+alter table public.cp_transactions enable row level security;
+alter table public.cp_withdrawals enable row level security;
+alter table public.cp_advances enable row level security;
 
 -- Users: can only see/edit own row
-create policy "Users can view own profile" on public.users
+create policy "Users can view own profile" on public.cp_users
   for select using (auth.uid() = id);
 
-create policy "Users can update own profile" on public.users
+create policy "Users can update own profile" on public.cp_users
   for update using (auth.uid() = id);
 
-create policy "Users can insert own profile" on public.users
+create policy "Users can insert own profile" on public.cp_users
   for insert with check (auth.uid() = id);
 
 -- Clients: creator sees their own
-create policy "Creators manage own clients" on public.clients
+create policy "Creators manage own clients" on public.cp_clients
   for all using (auth.uid() = creator_id);
 
 -- Invoices: creator sees their own; public can read for payment page
-create policy "Creators manage own invoices" on public.invoices
+create policy "Creators manage own invoices" on public.cp_invoices
   for all using (auth.uid() = creator_id);
 
-create policy "Public can view sent/paid invoices" on public.invoices
+create policy "Public can view sent/paid invoices" on public.cp_invoices
   for select using (status in ('sent', 'paid'));
 
 -- Transactions: creator sees their own
-create policy "Creators view own transactions" on public.transactions
+create policy "Creators view own transactions" on public.cp_transactions
   for select using (auth.uid() = creator_id);
 
-create policy "Service can insert transactions" on public.transactions
+create policy "Service can insert transactions" on public.cp_transactions
   for insert with check (true);
 
 -- Withdrawals: creator sees their own
-create policy "Creators manage own withdrawals" on public.withdrawals
+create policy "Creators manage own withdrawals" on public.cp_withdrawals
   for all using (auth.uid() = creator_id);
 
 -- Advances: creator sees their own
-create policy "Creators manage own advances" on public.advances
+create policy "Creators manage own advances" on public.cp_advances
   for all using (auth.uid() = creator_id);
 
 -- ============================================================
 -- Indexes
 -- ============================================================
-create index idx_invoices_creator_id on public.invoices(creator_id);
-create index idx_invoices_payment_reference on public.invoices(payment_reference);
-create index idx_invoices_invoice_number on public.invoices(invoice_number);
-create index idx_transactions_creator_id on public.transactions(creator_id);
-create index idx_withdrawals_creator_id on public.withdrawals(creator_id);
-create index idx_clients_creator_id on public.clients(creator_id);
+create index idx_invoices_creator_id on public.cp_invoices(creator_id);
+create index idx_invoices_payment_reference on public.cp_invoices(payment_reference);
+create index idx_invoices_invoice_number on public.cp_invoices(invoice_number);
+create index idx_transactions_creator_id on public.cp_transactions(creator_id);
+create index idx_withdrawals_creator_id on public.cp_withdrawals(creator_id);
+create index idx_clients_creator_id on public.cp_clients(creator_id);
