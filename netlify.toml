@@ -1,0 +1,10 @@
+[build]
+  base    = "creatorpay"
+  command = "npm run build"
+  publish = "creatorpay/.next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
