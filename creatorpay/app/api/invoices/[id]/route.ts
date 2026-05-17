@@ -8,8 +8,8 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { data: invoice, error } = await supabase
-    .from('invoices')
-    .select('*, clients(*)')
+    .from('cp_invoices')
+    .select('*, cp_clients(*)')
     .eq('id', id)
     .eq('creator_id', user.id)
     .single()

@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Failed to create user' }, { status: 500 })
   }
 
-  const { error: insertError } = await supabase.from('users').insert({
+  const { error: insertError } = await supabase.from('cp_users').insert({
     id: userId,
     email,
     full_name,

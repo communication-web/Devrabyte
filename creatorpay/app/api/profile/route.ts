@@ -6,7 +6,7 @@ export async function GET() {
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { data: userData } = await supabase
-    .from('users')
+    .from('cp_users')
     .select('*')
     .eq('id', user.id)
     .single()

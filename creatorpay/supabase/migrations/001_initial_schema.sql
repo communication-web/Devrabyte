@@ -2,7 +2,7 @@
 create extension if not exists "uuid-ossp";
 
 -- Users table (extends Supabase auth.users)
-create table public.users (
+create table public.cp_users (
   id uuid primary key references auth.users(id) on delete cascade,
   email text not null unique,
   full_name text not null,
@@ -18,9 +18,9 @@ create table public.users (
 );
 
 -- Clients table
-create table public.clients (
+create table public.cp_clients (
   id uuid primary key default uuid_generate_v4(),
-  creator_id uuid not null references public.users(id) on delete cascade,
+  creator_id uuid not null references public.cp_users(id) on delete cascade,
   name text not null,
   email text not null,
   phone text,

@@ -28,8 +28,8 @@ export async function POST(request: NextRequest) {
     const channel = data.channel
 
     const { data: invoice } = await supabase
-      .from('invoices')
-      .select('*, users(phone, business_name)')
+      .from('cp_invoices')
+      .select('*, cp_users(phone, business_name)')
       .eq('payment_reference', reference)
       .single()
 
@@ -41,11 +41,11 @@ export async function POST(request: NextRequest) {
     const creator_amount = amount - platform_fee_amount
 
     await supabase
-      .from('invoices')
+      .from('cp_invoices')
       .update({ status: 'paid' })
       .eq('id', invoice.id)
 
-    await supabase.from('transactions').insert({
+    await supabase.from('cp_transactions').insert({
       invoice_id: invoice.id,
       creator_id: invoice.creator_id,
       amount,
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
   if (event.event === 'transfer.success') {
     const transferCode = event.data.transfer_code
     await supabase
-      .from('withdrawals')
+      .from('cp_withdrawals')
       .update({ status: 'success' })
       .eq('paystack_transfer_code', transferCode)
   }
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     const transferCode = event.data.transfer_code
     const status = event.event === 'transfer.failed' ? 'failed' : 'reversed'
     await supabase
-      .from('withdrawals')
+      .from('cp_withdrawals')
       .update({ status })
       .eq('paystack_transfer_code', transferCode)
   }

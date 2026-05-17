@@ -6,7 +6,7 @@ import { LineItem } from '@/types'
 
 async function getNextInvoiceNumber(supabase: Awaited<ReturnType<typeof createClient>>, userId: string): Promise<string> {
   const { count } = await supabase
-    .from('invoices')
+    .from('cp_invoices')
     .select('*', { count: 'exact', head: true })
     .eq('creator_id', userId)
 
@@ -20,8 +20,8 @@ export async function GET() {
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { data: invoices, error } = await supabase
-    .from('invoices')
-    .select('*, clients(name, company)')
+    .from('cp_invoices')
+    .select('*, cp_clients(name, company)')
     .eq('creator_id', user.id)
     .order('created_at', { ascending: false })
 
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
   let resolvedClientId = client_id
   if (new_client) {
     const { data: createdClient, error: clientError } = await supabase
-      .from('clients')
+      .from('cp_clients')
       .insert({ creator_id: user.id, ...new_client })
       .select()
       .single()
@@ -75,13 +75,13 @@ export async function POST(request: NextRequest) {
   // If sending, create Paystack payment link
   if (action === 'send' && resolvedClientId) {
     const { data: userData } = await supabase
-      .from('users')
+      .from('cp_users')
       .select('paystack_subaccount_code, email')
       .eq('id', user.id)
       .single()
 
     const { data: clientData } = await supabase
-      .from('clients')
+      .from('cp_clients')
       .select('email')
       .eq('id', resolvedClientId)
       .single()
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
   }
 
   const { data: invoice, error } = await supabase
-    .from('invoices')
+    .from('cp_invoices')
     .insert(invoiceData)
     .select()
     .single()

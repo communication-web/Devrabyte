@@ -10,8 +10,8 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { data: invoice } = await supabase
-    .from('invoices')
-    .select('*, clients(email)')
+    .from('cp_invoices')
+    .select('*, cp_clients(email)')
     .eq('id', id)
     .eq('creator_id', user.id)
     .single()
@@ -20,7 +20,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
   if (invoice.status !== 'draft') return Response.json({ error: 'Invoice is not a draft' }, { status: 400 })
 
   const { data: userData } = await supabase
-    .from('users')
+    .from('cp_users')
     .select('paystack_subaccount_code, email')
     .eq('id', user.id)
     .single()
@@ -46,7 +46,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
   }
 
   const { error } = await supabase
-    .from('invoices')
+    .from('cp_invoices')
     .update({ status: 'sent', payment_reference: reference, paystack_payment_link })
     .eq('id', id)
 

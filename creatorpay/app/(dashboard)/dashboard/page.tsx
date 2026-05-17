@@ -19,13 +19,13 @@ export default async function DashboardPage() {
       cache: 'no-store',
     }).catch(() => null),
     supabase
-      .from('invoices')
-      .select('*, clients(name)')
+      .from('cp_invoices')
+      .select('*, cp_clients(name)')
       .eq('creator_id', user.id)
       .order('created_at', { ascending: false })
       .limit(5),
     supabase
-      .from('transactions')
+      .from('cp_transactions')
       .select('*')
       .eq('creator_id', user.id)
       .eq('status', 'success')

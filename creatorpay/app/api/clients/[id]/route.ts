@@ -10,7 +10,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   const { name, email, phone, company } = await request.json()
 
   const { error } = await supabase
-    .from('clients')
+    .from('cp_clients')
     .update({ name, email, phone: phone || null, company: company || null })
     .eq('id', id)
     .eq('creator_id', user.id)
@@ -27,7 +27,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { error } = await supabase
-    .from('clients')
+    .from('cp_clients')
     .delete()
     .eq('id', id)
     .eq('creator_id', user.id)

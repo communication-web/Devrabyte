@@ -13,8 +13,8 @@ export default async function PublicInvoicePage({
   const supabase = await createClient()
 
   const { data: invoice } = await supabase
-    .from('invoices')
-    .select('*, clients(*), users(business_name, full_name)')
+    .from('cp_invoices')
+    .select('*, cp_clients(*), cp_users(business_name, full_name)')
     .eq('invoice_number', invoice_number)
     .single()
 

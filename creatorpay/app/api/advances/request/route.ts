@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   if (!invoice_id) return Response.json({ error: 'invoice_id is required' }, { status: 400 })
 
   const { data: invoice } = await supabase
-    .from('invoices')
+    .from('cp_invoices')
     .select('*')
     .eq('id', invoice_id)
     .eq('creator_id', user.id)
@@ -25,14 +25,14 @@ export async function POST(request: NextRequest) {
   const advance_amount = invoice.total - fee_amount
 
   await Promise.all([
-    supabase.from('advances').insert({
+    supabase.from('cp_advances').insert({
       invoice_id,
       creator_id: user.id,
       advance_amount,
       fee_amount,
       status: 'requested',
     }),
-    supabase.from('invoices').update({ advance_requested: true }).eq('id', invoice_id),
+    supabase.from('cp_invoices').update({ advance_requested: true }).eq('id', invoice_id),
   ])
 
   return Response.json({

@@ -9,7 +9,7 @@ export async function GET() {
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { data: withdrawals } = await supabase
-    .from('withdrawals')
+    .from('cp_withdrawals')
     .select('*')
     .eq('creator_id', user.id)
     .order('created_at', { ascending: false })
@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
 
   // Calculate available balance
   const [txRes, withdrawalsRes] = await Promise.all([
-    supabase.from('transactions').select('creator_amount').eq('creator_id', user.id).eq('status', 'success'),
-    supabase.from('withdrawals').select('amount').eq('creator_id', user.id).eq('status', 'success'),
+    supabase.from('cp_transactions').select('creator_amount').eq('creator_id', user.id).eq('status', 'success'),
+    supabase.from('cp_withdrawals').select('amount').eq('creator_id', user.id).eq('status', 'success'),
   ])
 
   const total_earned = (txRes.data || []).reduce((sum, tx) => sum + tx.creator_amount, 0)
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
   }
 
   const { data: userData } = await supabase
-    .from('users')
+    .from('cp_users')
     .select('paystack_recipient_code')
     .eq('id', user.id)
     .single()
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
   }
 
   const { data: withdrawal, error } = await supabase
-    .from('withdrawals')
+    .from('cp_withdrawals')
     .insert({
       creator_id: user.id,
       amount,

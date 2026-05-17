@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Missing required fields' }, { status: 400 })
   }
 
-  const { data: userData } = await supabase.from('users').select('email, full_name').eq('id', user.id).single()
+  const { data: userData } = await supabase.from('cp_users').select('email, full_name').eq('id', user.id).single()
   const bank_code = getBankCode(bank_name)
 
   let paystack_subaccount_code: string | null = null
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
   }
 
   const { error } = await supabase
-    .from('users')
+    .from('cp_users')
     .update({
       business_name,
       creative_category,

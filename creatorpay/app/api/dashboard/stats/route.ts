@@ -7,17 +7,17 @@ export async function GET() {
 
   const [txRes, pendingRes, withdrawalsRes] = await Promise.all([
     supabase
-      .from('transactions')
+      .from('cp_transactions')
       .select('creator_amount')
       .eq('creator_id', user.id)
       .eq('status', 'success'),
     supabase
-      .from('invoices')
+      .from('cp_invoices')
       .select('total')
       .eq('creator_id', user.id)
       .eq('status', 'sent'),
     supabase
-      .from('withdrawals')
+      .from('cp_withdrawals')
       .select('amount')
       .eq('creator_id', user.id)
       .eq('status', 'success'),

@@ -14,8 +14,8 @@ export default async function InvoicesPage() {
   if (!user) redirect('/login')
 
   const { data: invoices } = await supabase
-    .from('invoices')
-    .select('*, clients(name, company)')
+    .from('cp_invoices')
+    .select('*, cp_clients(name, company)')
     .eq('creator_id', user.id)
     .order('created_at', { ascending: false })
 

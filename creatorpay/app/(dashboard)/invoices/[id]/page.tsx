@@ -17,8 +17,8 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
   if (!user) redirect('/login')
 
   const { data: invoice } = await supabase
-    .from('invoices')
-    .select('*, clients(*)')
+    .from('cp_invoices')
+    .select('*, cp_clients(*)')
     .eq('id', id)
     .eq('creator_id', user.id)
     .single()

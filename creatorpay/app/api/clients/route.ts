@@ -7,7 +7,7 @@ export async function GET() {
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { data: clients, error } = await supabase
-    .from('clients')
+    .from('cp_clients')
     .select('*')
     .eq('creator_id', user.id)
     .order('name')
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
   if (!name || !email) return Response.json({ error: 'Name and email are required' }, { status: 400 })
 
   const { data, error } = await supabase
-    .from('clients')
+    .from('cp_clients')
     .insert({ creator_id: user.id, name, email, phone: phone || null, company: company || null })
     .select()
     .single()
