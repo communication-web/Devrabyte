@@ -81,7 +81,7 @@ export default async function DashboardPage() {
                     <div>
                       <p className="text-sm font-medium text-gray-900">{inv.invoice_number as string}</p>
                       <p className="text-xs text-gray-400 mt-0.5">
-                        {(inv.clients as { name: string } | null)?.name || '—'} · {formatDate(inv.created_at as string)}
+                        {(inv.cp_clients as { name: string } | null)?.name || '—'} · {formatDate(inv.created_at as string)}
                       </p>
                     </div>
                     <div className="text-right">

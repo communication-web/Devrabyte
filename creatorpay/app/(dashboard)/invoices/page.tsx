@@ -55,7 +55,7 @@ export default async function InvoicesPage() {
             </div>
           ) : (
             <div className="divide-y divide-gray-50">
-              {(invoices as (Invoice & { clients: { name: string; company: string | null } | null })[]).map((inv) => (
+              {(invoices as (Invoice & { cp_clients: { name: string; company: string | null } | null })[]).map((inv) => (
                 <Link
                   key={inv.id}
                   href={`/invoices/${inv.id}`}
@@ -66,8 +66,8 @@ export default async function InvoicesPage() {
                     <p className="text-xs text-gray-400">{formatDate(inv.created_at)}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-700">{inv.clients?.name || '—'}</p>
-                    {inv.clients?.company && <p className="text-xs text-gray-400">{inv.clients.company}</p>}
+                    <p className="text-sm text-gray-700">{inv.cp_clients?.name || '—'}</p>
+                    {inv.cp_clients?.company && <p className="text-xs text-gray-400">{inv.cp_clients.company}</p>}
                   </div>
                   <p className="text-sm text-gray-600">{formatDate(inv.due_date)}</p>
                   <p className="text-sm font-semibold text-gray-900">{formatCurrency(inv.total)}</p>

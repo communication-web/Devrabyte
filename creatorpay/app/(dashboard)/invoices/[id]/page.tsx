@@ -25,7 +25,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
 
   if (!invoice) notFound()
 
-  const inv = invoice as Invoice & { clients: { name: string; email: string; company: string | null; phone: string | null } | null }
+  const inv = invoice as Invoice & { cp_clients: { name: string; email: string; company: string | null; phone: string | null } | null }
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -87,10 +87,10 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
         <Card>
           <CardHeader><h2 className="font-semibold text-gray-900">Client</h2></CardHeader>
           <CardContent className="space-y-1 text-sm">
-            <p className="font-medium text-gray-900">{inv.clients?.name || '—'}</p>
-            {inv.clients?.company && <p className="text-gray-500">{inv.clients.company}</p>}
-            <p className="text-gray-500">{inv.clients?.email}</p>
-            {inv.clients?.phone && <p className="text-gray-500">{inv.clients.phone}</p>}
+            <p className="font-medium text-gray-900">{inv.cp_clients?.name || '—'}</p>
+            {inv.cp_clients?.company && <p className="text-gray-500">{inv.cp_clients?.company}</p>}
+            <p className="text-gray-500">{inv.cp_clients?.email}</p>
+            {inv.cp_clients?.phone && <p className="text-gray-500">{inv.cp_clients?.phone}</p>}
           </CardContent>
         </Card>
 

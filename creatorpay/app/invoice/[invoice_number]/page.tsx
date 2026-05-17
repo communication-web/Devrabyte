@@ -21,12 +21,12 @@ export default async function PublicInvoicePage({
   if (!invoice) notFound()
 
   const inv = invoice as Invoice & {
-    clients: { name: string; email: string; company: string | null } | null
-    users: { business_name: string | null; full_name: string } | null
+    cp_clients: { name: string; email: string; company: string | null } | null
+    cp_users: { business_name: string | null; full_name: string } | null
   }
 
   const isPaid = inv.status === 'paid'
-  const creatorName = inv.users?.business_name || inv.users?.full_name || 'Creator'
+  const creatorName = inv.cp_users?.business_name || inv.cp_users?.full_name || 'Creator'
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -64,12 +64,12 @@ export default async function PublicInvoicePage({
             </div>
           </div>
 
-          {inv.clients && (
+          {inv.cp_clients && (
             <div className="px-8 py-5 border-b border-gray-100">
               <p className="text-xs text-gray-400 uppercase font-medium mb-2">Bill to</p>
-              <p className="font-medium text-gray-900">{inv.clients.name}</p>
-              {inv.clients.company && <p className="text-gray-500 text-sm">{inv.clients.company}</p>}
-              <p className="text-gray-500 text-sm">{inv.clients.email}</p>
+              <p className="font-medium text-gray-900">{inv.cp_clients.name}</p>
+              {inv.cp_clients.company && <p className="text-gray-500 text-sm">{inv.cp_clients.company}</p>}
+              <p className="text-gray-500 text-sm">{inv.cp_clients.email}</p>
             </div>
           )}
 

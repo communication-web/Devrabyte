@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       paid_at: new Date().toISOString(),
     })
 
-    const creatorUser = invoice.users as { phone: string | null; business_name: string | null } | null
+    const creatorUser = invoice.cp_users as { phone: string | null; business_name: string | null } | null
     if (creatorUser?.phone) {
       const msg = `Your invoice ${invoice.invoice_number} has been paid. ${formatCurrency(creator_amount)} is now in your CreatorPay wallet.`
       await sendWhatsApp(creatorUser.phone, msg)
