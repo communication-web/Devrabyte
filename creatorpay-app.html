@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CreatorPay</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  * { font-family: 'Inter', sans-serif; }
+  html { scroll-behavior: smooth; }
+  .page { display: none; }
+  .page.active { display: block; }
+  .dash-page { display: none; }
+  .dash-page.active { display: block; }
+</style>
+<script>
+  tailwind.config = {
+    theme: { extend: { colors: { violet: { 50:'#f5f3ff',100:'#ede9fe',200:'#ddd6fe',400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed',700:'#6d28d9' } } } }
+  }
+</script>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+<!-- ===== LANDING PAGE ===== -->
+<div id="page-landing" class="page">
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center">
+          <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        </div>
+        <span class="font-bold text-gray-900 text-lg">CreatorPay</span>
+      </div>
+      <nav class="hidden md:flex items-center gap-8 text-sm text-gray-500">
+        <a href="#features" class="hover:text-gray-900 transition-colors">Features</a>
+        <a href="#how-it-works" class="hover:text-gray-900 transition-colors">How it works</a>
+        <a href="#pricing" class="hover:text-gray-900 transition-colors">Pricing</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button onclick="navigate('login')" class="text-sm text-gray-600 hover:text-gray-900 font-medium">Sign in</button>
+        <button onclick="navigate('signup')" class="bg-violet-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-violet-700 transition-colors">Get started</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="max-w-6xl mx-auto px-6 pt-20 pb-24 text-center">
+    <div class="inline-flex items-center gap-2 bg-violet-50 border border-violet-100 rounded-full px-4 py-1.5 text-violet-700 text-sm font-medium mb-8">
+      <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      Built for African creatives
+    </div>
+    <h1 class="text-5xl md:text-6xl font-bold text-gray-900 leading-tight mb-6 tracking-tight">Invoice. Get paid.<br/><span class="text-violet-600">Same day.</span></h1>
+    <p class="text-xl text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">CreatorPay helps designers, photographers, and content creators send professional invoices and access earnings immediately — no more waiting 30–60 days.</p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <button onclick="navigate('signup')" class="inline-flex items-center justify-center gap-2 bg-violet-600 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-violet-700 transition-colors text-base">Start for free <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></button>
+      <button onclick="navigate('login')" class="inline-flex items-center justify-center gap-2 border border-gray-200 text-gray-700 px-7 py-3.5 rounded-xl font-semibold hover:bg-gray-50 transition-colors text-base">Sign in</button>
+    </div>
+    <p class="text-sm text-gray-400 mt-4">No credit card required · Free to get started</p>
+  </section>
+
+  <section class="border-y border-gray-100 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="text-center"><div class="text-3xl font-bold text-gray-900 mb-1">2,400+</div><div class="text-sm text-gray-500">Creators paid</div></div>
+      <div class="text-center"><div class="text-3xl font-bold text-gray-900 mb-1">₦890M+</div><div class="text-sm text-gray-500">Invoices processed</div></div>
+      <div class="text-center"><div class="text-3xl font-bold text-gray-900 mb-1">&lt; 1 day</div><div class="text-sm text-gray-500">Average payout time</div></div>
+      <div class="text-center"><div class="text-3xl font-bold text-gray-900 mb-1">98%</div><div class="text-sm text-gray-500">Payment success rate</div></div>
+    </div>
+  </section>
+
+  <section id="features" class="max-w-6xl mx-auto px-6 py-24">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Everything you need to get paid</h2>
+      <p class="text-gray-500 text-lg max-w-xl mx-auto">Tools built specifically for the realities of creative work in Africa.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-violet-100 hover:shadow-sm transition-all">
+        <div class="w-10 h-10 bg-violet-50 rounded-lg flex items-center justify-center mb-4"><svg class="h-5 w-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+        <h3 class="font-semibold text-gray-900 mb-2">Professional invoicing</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Create and send branded invoices in seconds. Clients pay directly from a secure payment link — no back-and-forth emails.</p>
+      </div>
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-violet-100 hover:shadow-sm transition-all">
+        <div class="w-10 h-10 bg-violet-50 rounded-lg flex items-center justify-center mb-4"><svg class="h-5 w-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+        <h3 class="font-semibold text-gray-900 mb-2">Pay advance</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Need cash before the brand pays? Get an advance on approved invoices. We collect from the client; you get the money now.</p>
+      </div>
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-violet-100 hover:shadow-sm transition-all">
+        <div class="w-10 h-10 bg-violet-50 rounded-lg flex items-center justify-center mb-4"><svg class="h-5 w-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+        <h3 class="font-semibold text-gray-900 mb-2">Instant withdrawals</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Once an invoice is paid, transfer to your Nigerian bank account in minutes — not days.</p>
+      </div>
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-violet-100 hover:shadow-sm transition-all">
+        <div class="w-10 h-10 bg-violet-50 rounded-lg flex items-center justify-center mb-4"><svg class="h-5 w-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+        <h3 class="font-semibold text-gray-900 mb-2">Fraud protection</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Every payment is verified by Paystack. We screen clients and flag suspicious activity before your money is at risk.</p>
+      </div>
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-violet-100 hover:shadow-sm transition-all">
+        <div class="w-10 h-10 bg-violet-50 rounded-lg flex items-center justify-center mb-4"><svg class="h-5 w-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <h3 class="font-semibold text-gray-900 mb-2">Payment reminders</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Automatic SMS and email follow-ups keep clients accountable without you having to chase.</p>
+      </div>
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-violet-100 hover:shadow-sm transition-all">
+        <div class="w-10 h-10 bg-violet-50 rounded-lg flex items-center justify-center mb-4"><svg class="h-5 w-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+        <h3 class="font-semibold text-gray-900 mb-2">Client management</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Keep a clean record of every client, invoice, and payment. Know exactly who owes you what at a glance.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="bg-gray-50 py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Up and running in minutes</h2>
+        <p class="text-gray-500 text-lg">Three steps from sign-up to paid.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-12">
+        <div><div class="text-5xl font-black text-violet-100 mb-4 select-none">01</div><h3 class="font-semibold text-gray-900 mb-2 text-lg">Create your account</h3><p class="text-gray-500 text-sm leading-relaxed">Sign up free, complete a quick onboarding, and connect your Nigerian bank account.</p></div>
+        <div><div class="text-5xl font-black text-violet-100 mb-4 select-none">02</div><h3 class="font-semibold text-gray-900 mb-2 text-lg">Send an invoice</h3><p class="text-gray-500 text-sm leading-relaxed">Add your client, set the amount and due date, and send a payment link in seconds.</p></div>
+        <div><div class="text-5xl font-black text-violet-100 mb-4 select-none">03</div><h3 class="font-semibold text-gray-900 mb-2 text-lg">Get your money</h3><p class="text-gray-500 text-sm leading-relaxed">Client pays via card or transfer. Funds hit your wallet instantly — withdraw anytime.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-6 py-24">
+    <div class="text-center mb-16"><h2 class="text-3xl font-bold text-gray-900 mb-4">Loved by creatives across Nigeria</h2></div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-xl border border-gray-100"><p class="text-gray-600 text-sm leading-relaxed mb-5">"I used to wait 45 days to get paid. Now I get my money the same day the client pays. CreatorPay changed my cash flow completely."</p><div class="font-semibold text-gray-900 text-sm">Temi Adeleke</div><div class="text-gray-400 text-xs mt-0.5">Freelance Photographer, Lagos</div></div>
+      <div class="p-6 rounded-xl border border-gray-100"><p class="text-gray-600 text-sm leading-relaxed mb-5">"The pay advance feature is a lifesaver. I can start new projects without worrying about whether my last invoice has cleared."</p><div class="font-semibold text-gray-900 text-sm">Chidi Okonkwo</div><div class="text-gray-400 text-xs mt-0.5">Brand Designer, Abuja</div></div>
+      <div class="p-6 rounded-xl border border-gray-100"><p class="text-gray-600 text-sm leading-relaxed mb-5">"My clients finally take me seriously. A proper invoice link looks so much more professional than a WhatsApp message with account details."</p><div class="font-semibold text-gray-900 text-sm">Sade Williams</div><div class="text-gray-400 text-xs mt-0.5">Content Creator, Port Harcourt</div></div>
+    </div>
+  </section>
+
+  <section id="pricing" class="bg-gray-50 py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Simple, transparent pricing</h2>
+        <p class="text-gray-500 text-lg">No monthly fees. You only pay when you get paid.</p>
+      </div>
+      <div class="max-w-md mx-auto bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+        <div class="flex items-baseline gap-1.5 mb-1"><span class="text-4xl font-bold text-gray-900">1.5%</span><span class="text-gray-500 text-sm">platform fee</span></div>
+        <p class="text-gray-400 text-sm mb-8">Per invoice paid. Nothing else.</p>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-3 text-sm text-gray-700"><svg class="h-4 w-4 text-violet-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Unlimited invoices</li>
+          <li class="flex items-center gap-3 text-sm text-gray-700"><svg class="h-4 w-4 text-violet-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Unlimited clients</li>
+          <li class="flex items-center gap-3 text-sm text-gray-700"><svg class="h-4 w-4 text-violet-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Instant withdrawals</li>
+          <li class="flex items-center gap-3 text-sm text-gray-700"><svg class="h-4 w-4 text-violet-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Payment reminders (SMS + email)</li>
+          <li class="flex items-center gap-3 text-sm text-gray-700"><svg class="h-4 w-4 text-violet-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Secure Paystack checkout</li>
+          <li class="flex items-center gap-3 text-sm text-gray-700"><svg class="h-4 w-4 text-violet-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Pay advance available (+2.5%)</li>
+        </ul>
+        <button onclick="navigate('signup')" class="w-full text-center bg-violet-600 text-white py-3 rounded-xl font-semibold hover:bg-violet-700 transition-colors">Get started free</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-6 py-24 text-center">
+    <h2 class="text-4xl font-bold text-gray-900 mb-4">Start getting paid on time</h2>
+    <p class="text-gray-500 text-lg mb-8 max-w-lg mx-auto">Join thousands of creatives who've taken control of their cash flow.</p>
+    <button onclick="navigate('signup')" class="inline-flex items-center gap-2 bg-violet-600 text-white px-8 py-4 rounded-xl font-semibold text-base hover:bg-violet-700 transition-colors">Create your free account <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></button>
+  </section>
+
+  <footer class="border-t border-gray-100 py-8">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2"><div class="w-6 h-6 bg-violet-600 rounded flex items-center justify-center"><svg class="h-3 w-3 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div><span class="font-semibold text-gray-900 text-sm">CreatorPay</span></div>
+      <div class="flex items-center gap-6 text-sm text-gray-400"><a href="#" class="hover:text-gray-600">Privacy</a><a href="#" class="hover:text-gray-600">Terms</a><a href="#" class="hover:text-gray-600">Support</a></div>
+      <p class="text-sm text-gray-400">© 2025 Devrabyte. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
+
+<!-- ===== LOGIN PAGE ===== -->
+<div id="page-login" class="page min-h-screen bg-gray-50 flex items-center justify-center px-4">
+  <div class="w-full max-w-sm">
+    <div class="text-center mb-8">
+      <div class="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center mx-auto mb-4"><svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
+      <h1 class="text-2xl font-bold text-gray-900">Welcome back</h1>
+      <p class="text-gray-500 text-sm mt-1">Sign in to your CreatorPay account</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+      <div class="space-y-4">
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Email address</label><input type="email" placeholder="you@example.com" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"/></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Password</label><input type="password" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"/></div>
+        <div class="flex items-center justify-between text-sm"><label class="flex items-center gap-2 text-gray-600"><input type="checkbox" class="rounded border-gray-300 text-violet-600"/> Remember me</label><a href="#" class="text-violet-600 hover:text-violet-700">Forgot password?</a></div>
+        <button onclick="navigate('dashboard')" class="w-full bg-violet-600 text-white py-2.5 rounded-lg font-semibold hover:bg-violet-700 transition-colors text-sm">Sign in</button>
+      </div>
+      <p class="text-center text-sm text-gray-500 mt-4">Don't have an account? <button onclick="navigate('signup')" class="text-violet-600 font-medium hover:text-violet-700">Sign up</button></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SIGNUP PAGE ===== -->
+<div id="page-signup" class="page min-h-screen bg-gray-50 flex items-center justify-center px-4">
+  <div class="w-full max-w-sm">
+    <div class="text-center mb-8">
+      <div class="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center mx-auto mb-4"><svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
+      <h1 class="text-2xl font-bold text-gray-900">Create your account</h1>
+      <p class="text-gray-500 text-sm mt-1">Start getting paid the same day</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+      <div class="space-y-4">
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Full name</label><input type="text" placeholder="Temi Adeleke" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"/></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Email address</label><input type="email" placeholder="you@example.com" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"/></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Password</label><input type="password" placeholder="At least 8 characters" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"/></div>
+        <button onclick="navigate('onboarding')" class="w-full bg-violet-600 text-white py-2.5 rounded-lg font-semibold hover:bg-violet-700 transition-colors text-sm">Create account</button>
+      </div>
+      <p class="text-center text-xs text-gray-400 mt-4">By creating an account you agree to our <a href="#" class="text-violet-600">Terms</a> and <a href="#" class="text-violet-600">Privacy Policy</a>.</p>
+      <p class="text-center text-sm text-gray-500 mt-3">Already have an account? <button onclick="navigate('login')" class="text-violet-600 font-medium hover:text-violet-700">Sign in</button></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ONBOARDING PAGE ===== -->
+<div id="page-onboarding" class="page min-h-screen bg-gray-50 flex items-center justify-center px-4">
+  <div class="w-full max-w-lg">
+    <div class="text-center mb-8">
+      <div class="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center mx-auto mb-4"><svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
+      <h1 class="text-2xl font-bold text-gray-900">Set up your account</h1>
+      <p class="text-gray-500 text-sm mt-1">Just a few details to get you started</p>
+    </div>
+    <!-- Step indicator -->
+    <div class="flex items-center justify-center gap-3 mb-8">
+      <div class="flex items-center gap-2"><div id="ob-step1-dot" class="w-8 h-8 rounded-full bg-violet-600 text-white text-sm font-semibold flex items-center justify-center">1</div><span class="text-sm font-medium text-gray-700">Your profile</span></div>
+      <div class="w-12 h-px bg-gray-200"></div>
+      <div class="flex items-center gap-2"><div id="ob-step2-dot" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 text-sm font-semibold flex items-center justify-center">2</div><span id="ob-step2-label" class="text-sm text-gray-400">Bank details</span></div>
+    </div>
+    <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+      <!-- Step 1 -->
+      <div id="ob-step1">
+        <h2 class="font-semibold text-gray-900 mb-4">Tell us about yourself</h2>
+        <div class="space-y-4">
+          <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Business / display name</label><input type="text" placeholder="Temi Adeleke Photography" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"/></div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Creative category</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white">
+              <option value="">Select a category</option>
+              <option>Photographer</option><option>Brand Designer</option><option>Content Creator</option><option>Videographer</option><option>Illustrator</option><option>Copywriter</option><option>Social Media Manager</option><option>Other</option>
+            </select>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Phone number</label><input type="tel" placeholder="+234 801 234 5678" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"/></div>
+          <button onclick="obNext()" class="w-full bg-violet-600 text-white py-2.5 rounded-lg font-semibold hover:bg-violet-700 transition-colors text-sm">Continue</button>
+        </div>
+      </div>
+      <!-- Step 2 -->
+      <div id="ob-step2" class="hidden">
+        <h2 class="font-semibold text-gray-900 mb-4">Connect your bank account</h2>
+        <div class="space-y-4">
+          <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Bank name</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white">
+              <option value="">Select your bank</option>
+              <option>Access Bank</option><option>GTBank</option><option>First Bank</option><option>UBA</option><option>Zenith Bank</option><option>Kuda Bank</option><option>OPay</option><option>Moniepoint</option><option>Sterling Bank</option><option>Stanbic IBTC</option>
+            </select>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Account number</label><input type="text" placeholder="0123456789" maxlength="10" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"/></div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Account name</label><input type="text" placeholder="Automatically verified" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent" readonly/></div>
+          <div class="flex gap-3">
+            <button onclick="obBack()" class="flex-1 border border-gray-200 text-gray-700 py-2.5 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-sm">Back</button>
+            <button onclick="navigate('dashboard')" class="flex-1 bg-violet-600 text-white py-2.5 rounded-lg font-semibold hover:bg-violet-700 transition-colors text-sm">Finish setup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD SHELL (sidebar + main) ===== -->
+<div id="page-dashboard-shell" class="page min-h-screen bg-gray-50 flex">
+  <!-- Sidebar -->
+  <aside class="fixed top-0 left-0 h-full w-64 bg-white border-r border-gray-100 flex flex-col z-40">
+    <div class="p-5 border-b border-gray-100">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center"><svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
+        <span class="font-bold text-gray-900">CreatorPay</span>
+      </div>
+    </div>
+    <nav class="flex-1 p-4 space-y-1">
+      <button onclick="showDash('home')" id="nav-home" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Dashboard
+      </button>
+      <button onclick="showDash('invoices')" id="nav-invoices" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Invoices
+      </button>
+      <button onclick="showDash('clients')" id="nav-clients" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Clients
+      </button>
+      <button onclick="showDash('advance')" id="nav-advance" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Pay Advance
+      </button>
+      <button onclick="showDash('withdrawals')" id="nav-withdrawals" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        Withdrawals
+      </button>
+    </nav>
+    <div class="p-4 border-t border-gray-100">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-violet-100 rounded-full flex items-center justify-center text-violet-700 font-semibold text-sm">TA</div>
+        <div class="flex-1 min-w-0"><div class="text-sm font-medium text-gray-900 truncate">Temi Adeleke</div><div class="text-xs text-gray-400">Photographer</div></div>
+        <button onclick="navigate('landing')" class="text-gray-400 hover:text-gray-600" title="Sign out"><svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content area -->
+  <main class="ml-64 flex-1 p-8">
+
+    <!-- DASHBOARD HOME -->
+    <div id="dash-home" class="dash-page">
+      <div class="mb-8"><h1 class="text-2xl font-bold text-gray-900">Good morning, Temi 👋</h1><p class="text-gray-500 text-sm mt-1">Here's what's happening with your money today.</p></div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white rounded-xl border border-gray-100 p-5"><p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Total Earned</p><p class="text-2xl font-bold text-gray-900">₦1,240,500</p><p class="text-xs text-green-600 mt-1">↑ 12% this month</p></div>
+        <div class="bg-white rounded-xl border border-gray-100 p-5"><p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Available Balance</p><p class="text-2xl font-bold text-violet-600">₦284,750</p><p class="text-xs text-gray-400 mt-1">Ready to withdraw</p></div>
+        <div class="bg-white rounded-xl border border-gray-100 p-5"><p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Pending</p><p class="text-2xl font-bold text-gray-900">₦390,000</p><p class="text-xs text-yellow-600 mt-1">3 invoices awaiting</p></div>
+        <div class="bg-white rounded-xl border border-gray-100 p-5"><p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Paid Out</p><p class="text-2xl font-bold text-gray-900">₦955,750</p><p class="text-xs text-gray-400 mt-1">Lifetime withdrawals</p></div>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl border border-gray-100 p-6">
+          <div class="flex items-center justify-between mb-4"><h2 class="font-semibold text-gray-900">Recent Invoices</h2><button onclick="showDash('invoices')" class="text-sm text-violet-600 hover:text-violet-700">View all</button></div>
+          <table class="w-full text-sm">
+            <thead><tr class="text-xs text-gray-500 border-b border-gray-100"><th class="text-left pb-2 font-medium">Invoice</th><th class="text-left pb-2 font-medium">Client</th><th class="text-right pb-2 font-medium">Amount</th><th class="text-right pb-2 font-medium">Status</th></tr></thead>
+            <tbody class="divide-y divide-gray-50">
+              <tr class="hover:bg-gray-50"><td class="py-2.5 text-gray-600">INV-006</td><td class="py-2.5 text-gray-900">Oando PLC</td><td class="py-2.5 text-right text-gray-900">₦195,000</td><td class="py-2.5 text-right"><span class="bg-green-50 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium">Paid</span></td></tr>
+              <tr class="hover:bg-gray-50"><td class="py-2.5 text-gray-600">INV-005</td><td class="py-2.5 text-gray-900">MTN Nigeria</td><td class="py-2.5 text-right text-gray-900">₦150,000</td><td class="py-2.5 text-right"><span class="bg-blue-50 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium">Sent</span></td></tr>
+              <tr class="hover:bg-gray-50"><td class="py-2.5 text-gray-600">INV-004</td><td class="py-2.5 text-gray-900">Flutterwave</td><td class="py-2.5 text-right text-gray-900">₦240,000</td><td class="py-2.5 text-right"><span class="bg-blue-50 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium">Sent</span></td></tr>
+              <tr class="hover:bg-gray-50"><td class="py-2.5 text-gray-600">INV-003</td><td class="py-2.5 text-gray-900">Konga Online</td><td class="py-2.5 text-right text-gray-900">₦85,000</td><td class="py-2.5 text-right"><span class="bg-green-50 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium">Paid</span></td></tr>
+              <tr class="hover:bg-gray-50"><td class="py-2.5 text-gray-600">INV-002</td><td class="py-2.5 text-gray-900">Interswitch</td><td class="py-2.5 text-right text-gray-900">₦320,000</td><td class="py-2.5 text-right"><span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full font-medium">Draft</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-6">
+          <div class="flex items-center justify-between mb-4"><h2 class="font-semibold text-gray-900">Recent Transactions</h2><button onclick="showDash('withdrawals')" class="text-sm text-violet-600 hover:text-violet-700">View all</button></div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between py-2.5 border-b border-gray-50"><div><p class="text-sm font-medium text-gray-900">Withdrawal to GTBank</p><p class="text-xs text-gray-400 mt-0.5">May 18, 2025 · 2:34 PM</p></div><div class="text-right"><p class="text-sm font-semibold text-gray-900">₦120,000</p><span class="bg-green-50 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium">Success</span></div></div>
+            <div class="flex items-center justify-between py-2.5 border-b border-gray-50"><div><p class="text-sm font-medium text-gray-900">Withdrawal to GTBank</p><p class="text-xs text-gray-400 mt-0.5">May 12, 2025 · 10:15 AM</p></div><div class="text-right"><p class="text-sm font-semibold text-gray-900">₦75,000</p><span class="bg-green-50 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium">Success</span></div></div>
+            <div class="flex items-center justify-between py-2.5"><div><p class="text-sm font-medium text-gray-900">Withdrawal to GTBank</p><p class="text-xs text-gray-400 mt-0.5">May 5, 2025 · 9:00 AM</p></div><div class="text-right"><p class="text-sm font-semibold text-gray-900">₦50,000</p><span class="bg-yellow-50 text-yellow-700 text-xs px-2 py-0.5 rounded-full font-medium">Pending</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVOICES LIST -->
+    <div id="dash-invoices" class="dash-page">
+      <div class="flex items-center justify-between mb-8">
+        <div><h1 class="text-2xl font-bold text-gray-900">Invoices</h1><p class="text-gray-500 text-sm mt-1">Manage and track all your invoices</p></div>
+        <button onclick="showDash('invoices-new')" class="inline-flex items-center gap-2 bg-violet-600 text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-violet-700 transition-colors"><svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>New invoice</button>
+      </div>
+      <div class="flex gap-2 mb-6">
+        <button class="px-4 py-1.5 rounded-full text-sm font-medium bg-violet-600 text-white">All</button>
+        <button class="px-4 py-1.5 rounded-full text-sm font-medium text-gray-500 hover:bg-gray-100">Draft</button>
+        <button class="px-4 py-1.5 rounded-full text-sm font-medium text-gray-500 hover:bg-gray-100">Sent</button>
+        <button class="px-4 py-1.5 rounded-full text-sm font-medium text-gray-500 hover:bg-gray-100">Paid</button>
+        <button class="px-4 py-1.5 rounded-full text-sm font-medium text-gray-500 hover:bg-gray-100">Overdue</button>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 border-b border-gray-100"><tr><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Invoice</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Client</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Amount</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Due Date</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Status</th><th class="px-5 py-3"></th></tr></thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr class="hover:bg-gray-50 cursor-pointer" onclick="showDash('invoice-detail')"><td class="px-5 py-3.5 font-medium text-gray-900">INV-006</td><td class="px-5 py-3.5 text-gray-700">Oando PLC</td><td class="px-5 py-3.5 text-gray-900">₦197,925</td><td class="px-5 py-3.5 text-gray-500">May 20, 2025</td><td class="px-5 py-3.5"><span class="bg-green-50 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Paid</span></td><td class="px-5 py-3.5 text-right"><button onclick="event.stopPropagation();showDash('invoice-detail')" class="text-violet-600 text-xs font-medium hover:text-violet-700">View</button></td></tr>
+            <tr class="hover:bg-gray-50 cursor-pointer" onclick="showDash('invoice-detail')"><td class="px-5 py-3.5 font-medium text-gray-900">INV-005</td><td class="px-5 py-3.5 text-gray-700">MTN Nigeria</td><td class="px-5 py-3.5 text-gray-900">₦152,250</td><td class="px-5 py-3.5 text-gray-500">May 25, 2025</td><td class="px-5 py-3.5"><span class="bg-blue-50 text-blue-700 text-xs px-2.5 py-1 rounded-full font-medium">Sent</span></td><td class="px-5 py-3.5 text-right"><button onclick="event.stopPropagation();showDash('invoice-detail')" class="text-violet-600 text-xs font-medium hover:text-violet-700">View</button></td></tr>
+            <tr class="hover:bg-gray-50 cursor-pointer" onclick="showDash('invoice-detail')"><td class="px-5 py-3.5 font-medium text-gray-900">INV-004</td><td class="px-5 py-3.5 text-gray-700">Flutterwave</td><td class="px-5 py-3.5 text-gray-900">₦243,600</td><td class="px-5 py-3.5 text-gray-500">May 30, 2025</td><td class="px-5 py-3.5"><span class="bg-blue-50 text-blue-700 text-xs px-2.5 py-1 rounded-full font-medium">Sent</span></td><td class="px-5 py-3.5 text-right"><button onclick="event.stopPropagation();showDash('invoice-detail')" class="text-violet-600 text-xs font-medium hover:text-violet-700">View</button></td></tr>
+            <tr class="hover:bg-gray-50 cursor-pointer" onclick="showDash('invoice-detail')"><td class="px-5 py-3.5 font-medium text-gray-900">INV-003</td><td class="px-5 py-3.5 text-gray-700">Konga Online</td><td class="px-5 py-3.5 text-gray-900">₦86,275</td><td class="px-5 py-3.5 text-gray-500">May 10, 2025</td><td class="px-5 py-3.5"><span class="bg-green-50 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Paid</span></td><td class="px-5 py-3.5 text-right"><button onclick="event.stopPropagation();showDash('invoice-detail')" class="text-violet-600 text-xs font-medium hover:text-violet-700">View</button></td></tr>
+            <tr class="hover:bg-gray-50 cursor-pointer" onclick="showDash('invoice-detail')"><td class="px-5 py-3.5 font-medium text-gray-900">INV-002</td><td class="px-5 py-3.5 text-gray-700">Interswitch</td><td class="px-5 py-3.5 text-gray-900">₦324,800</td><td class="px-5 py-3.5 text-gray-500">Jun 5, 2025</td><td class="px-5 py-3.5"><span class="bg-gray-100 text-gray-600 text-xs px-2.5 py-1 rounded-full font-medium">Draft</span></td><td class="px-5 py-3.5 text-right"><button onclick="event.stopPropagation();showDash('invoice-detail')" class="text-violet-600 text-xs font-medium hover:text-violet-700">View</button></td></tr>
+            <tr class="hover:bg-gray-50 cursor-pointer" onclick="showDash('invoice-detail')"><td class="px-5 py-3.5 font-medium text-gray-900">INV-001</td><td class="px-5 py-3.5 text-gray-700">Dangote Group</td><td class="px-5 py-3.5 text-gray-900">₦450,000</td><td class="px-5 py-3.5 text-gray-500">Apr 30, 2025</td><td class="px-5 py-3.5"><span class="bg-red-50 text-red-700 text-xs px-2.5 py-1 rounded-full font-medium">Overdue</span></td><td class="px-5 py-3.5 text-right"><button onclick="event.stopPropagation();showDash('invoice-detail')" class="text-violet-600 text-xs font-medium hover:text-violet-700">View</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- NEW INVOICE -->
+    <div id="dash-invoices-new" class="dash-page">
+      <div class="flex items-center gap-3 mb-8">
+        <button onclick="showDash('invoices')" class="text-gray-400 hover:text-gray-600"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+        <div><h1 class="text-2xl font-bold text-gray-900">Create invoice</h1><p class="text-gray-500 text-sm mt-0.5">Fill in the details below</p></div>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 space-y-5">
+          <div class="bg-white rounded-xl border border-gray-100 p-6">
+            <h2 class="font-semibold text-gray-900 mb-4">Client details</h2>
+            <div class="space-y-4">
+              <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Select client</label>
+                <select class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 bg-white">
+                  <option value="">Choose an existing client</option>
+                  <option>Oando PLC — accounts@oando.com</option><option>MTN Nigeria — procurement@mtn.ng</option><option>Flutterwave — finance@flutterwave.com</option><option>Konga Online — vendor@konga.com</option>
+                </select>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Issue date</label><input type="date" value="2025-05-20" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"/></div>
+                <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Due date</label><input type="date" value="2025-06-20" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"/></div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-100 p-6">
+            <h2 class="font-semibold text-gray-900 mb-4">Line items</h2>
+            <div class="space-y-3" id="line-items">
+              <div class="grid grid-cols-12 gap-2 text-xs text-gray-500 font-medium pb-1 border-b border-gray-100"><div class="col-span-5">Description</div><div class="col-span-2 text-center">Qty</div><div class="col-span-3 text-right">Unit price</div><div class="col-span-2 text-right">Total</div></div>
+              <div class="grid grid-cols-12 gap-2 items-center">
+                <input class="col-span-5 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Brand photography shoot" value="Brand photography shoot"/>
+                <input class="col-span-2 border border-gray-200 rounded-lg px-3 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="1" value="1"/>
+                <input class="col-span-3 border border-gray-200 rounded-lg px-3 py-2 text-sm text-right focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="0.00" value="150,000"/>
+                <div class="col-span-2 text-right text-sm font-medium text-gray-900">₦150,000</div>
+              </div>
+              <div class="grid grid-cols-12 gap-2 items-center">
+                <input class="col-span-5 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Post-production editing" value="Post-production editing"/>
+                <input class="col-span-2 border border-gray-200 rounded-lg px-3 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="1" value="1"/>
+                <input class="col-span-3 border border-gray-200 rounded-lg px-3 py-2 text-sm text-right focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="0.00" value="45,000"/>
+                <div class="col-span-2 text-right text-sm font-medium text-gray-900">₦45,000</div>
+              </div>
+            </div>
+            <button class="mt-4 inline-flex items-center gap-1.5 text-sm text-violet-600 font-medium hover:text-violet-700"><svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>Add line item</button>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-100 p-6">
+            <h2 class="font-semibold text-gray-900 mb-3">Notes (optional)</h2>
+            <textarea rows="3" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Payment terms, bank details, or any notes for your client…"></textarea>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="bg-white rounded-xl border border-gray-100 p-5 sticky top-8">
+            <h2 class="font-semibold text-gray-900 mb-4">Summary</h2>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span class="text-gray-900 font-medium">₦195,000</span></div>
+              <div class="flex justify-between"><span class="text-gray-500">Platform fee (1.5%)</span><span class="text-gray-900 font-medium">₦2,925</span></div>
+              <div class="border-t border-gray-100 pt-2 mt-2 flex justify-between"><span class="font-semibold text-gray-900">Total</span><span class="font-bold text-gray-900">₦197,925</span></div>
+            </div>
+            <div class="mt-5 space-y-2">
+              <button onclick="showDash('invoices')" class="w-full border border-gray-200 text-gray-700 py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-50 transition-colors">Save as draft</button>
+              <button onclick="showDash('invoice-detail')" class="w-full bg-violet-600 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-violet-700 transition-colors">Send invoice</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVOICE DETAIL -->
+    <div id="dash-invoice-detail" class="dash-page">
+      <div class="flex items-center gap-3 mb-6">
+        <button onclick="showDash('invoices')" class="text-gray-400 hover:text-gray-600"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+        <div class="flex-1"><h1 class="text-2xl font-bold text-gray-900">INV-006</h1></div>
+        <span class="bg-green-50 text-green-700 text-sm px-3 py-1 rounded-full font-medium">Paid</span>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 space-y-5">
+          <div class="bg-white rounded-xl border border-gray-100 p-6">
+            <div class="flex justify-between mb-6">
+              <div><p class="text-xs text-gray-400 mb-1">From</p><p class="font-semibold text-gray-900">Temi Adeleke</p><p class="text-sm text-gray-500">temi@creative.ng</p></div>
+              <div class="text-right"><p class="text-xs text-gray-400 mb-1">Invoice</p><p class="font-semibold text-gray-900">INV-006</p><p class="text-sm text-gray-500">Issued: May 6, 2025</p><p class="text-sm text-gray-500">Due: May 20, 2025</p></div>
+            </div>
+            <div class="border-t border-gray-100 pt-6">
+              <p class="text-xs text-gray-400 mb-1">Bill to</p>
+              <p class="font-semibold text-gray-900">Oando PLC</p>
+              <p class="text-sm text-gray-500">accounts@oando.com</p>
+            </div>
+            <div class="mt-6">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 rounded-lg"><tr><th class="text-left px-3 py-2.5 text-xs font-medium text-gray-500 rounded-l-lg">Description</th><th class="text-center px-3 py-2.5 text-xs font-medium text-gray-500">Qty</th><th class="text-right px-3 py-2.5 text-xs font-medium text-gray-500">Unit price</th><th class="text-right px-3 py-2.5 text-xs font-medium text-gray-500 rounded-r-lg">Total</th></tr></thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr><td class="px-3 py-3 text-gray-900">Brand photography shoot</td><td class="px-3 py-3 text-center text-gray-500">1</td><td class="px-3 py-3 text-right text-gray-900">₦150,000</td><td class="px-3 py-3 text-right text-gray-900">₦150,000</td></tr>
+                  <tr><td class="px-3 py-3 text-gray-900">Post-production editing</td><td class="px-3 py-3 text-center text-gray-500">1</td><td class="px-3 py-3 text-right text-gray-900">₦45,000</td><td class="px-3 py-3 text-right text-gray-900">₦45,000</td></tr>
+                </tbody>
+              </table>
+              <div class="mt-4 space-y-1.5 text-sm border-t border-gray-100 pt-4">
+                <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span class="text-gray-900">₦195,000</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">Platform fee (1.5%)</span><span class="text-gray-900">₦2,925</span></div>
+                <div class="flex justify-between pt-2 border-t border-gray-100 font-semibold text-base"><span class="text-gray-900">Total</span><span class="text-gray-900">₦197,925</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="bg-white rounded-xl border border-gray-100 p-5">
+            <h3 class="font-semibold text-gray-900 mb-3">Actions</h3>
+            <div class="space-y-2">
+              <button class="w-full border border-gray-200 text-gray-700 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"><svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Download PDF</button>
+              <button onclick="showDash('advance')" class="w-full bg-violet-600 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-violet-700 transition-colors flex items-center justify-center gap-2"><svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Request advance</button>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-100 p-5">
+            <h3 class="font-semibold text-gray-900 mb-3">Payment link</h3>
+            <div class="bg-gray-50 rounded-lg px-3 py-2.5 text-xs text-gray-500 font-mono break-all mb-3">pay.creatorpay.ng/INV-006</div>
+            <button class="w-full border border-gray-200 text-gray-700 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">Copy link</button>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-100 p-5">
+            <h3 class="font-semibold text-gray-900 mb-3">Client</h3>
+            <p class="font-medium text-gray-900 text-sm">Oando PLC</p>
+            <p class="text-gray-500 text-sm">accounts@oando.com</p>
+            <button onclick="showDash('clients')" class="text-violet-600 text-xs mt-2 hover:text-violet-700">View client profile →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div id="dash-clients" class="dash-page">
+      <div class="flex items-center justify-between mb-8">
+        <div><h1 class="text-2xl font-bold text-gray-900">Clients</h1><p class="text-gray-500 text-sm mt-1">Manage your client relationships</p></div>
+        <button class="inline-flex items-center gap-2 bg-violet-600 text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-violet-700 transition-colors"><svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>Add client</button>
+      </div>
+      <div class="mb-5"><div class="relative max-w-sm"><svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input type="text" placeholder="Search clients…" class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"/></div></div>
+      <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 border-b border-gray-100"><tr><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Name</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Email</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Company</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Added</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Invoices</th><th class="px-5 py-3"></th></tr></thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr class="hover:bg-gray-50"><td class="px-5 py-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-semibold text-xs">OP</div><span class="font-medium text-gray-900">Oando PLC</span></div></td><td class="px-5 py-3.5 text-gray-600">accounts@oando.com</td><td class="px-5 py-3.5 text-gray-600">Oando PLC</td><td class="px-5 py-3.5 text-gray-500">Jan 12, 2025</td><td class="px-5 py-3.5 text-gray-600">4 invoices</td><td class="px-5 py-3.5 text-right"><div class="flex items-center gap-3 justify-end"><button class="text-xs text-gray-500 hover:text-gray-700">Edit</button><button class="text-xs text-red-500 hover:text-red-700">Delete</button></div></td></tr>
+            <tr class="hover:bg-gray-50"><td class="px-5 py-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-700 font-semibold text-xs">MT</div><span class="font-medium text-gray-900">MTN Nigeria</span></div></td><td class="px-5 py-3.5 text-gray-600">procurement@mtn.ng</td><td class="px-5 py-3.5 text-gray-600">MTN Nigeria</td><td class="px-5 py-3.5 text-gray-500">Feb 3, 2025</td><td class="px-5 py-3.5 text-gray-600">2 invoices</td><td class="px-5 py-3.5 text-right"><div class="flex items-center gap-3 justify-end"><button class="text-xs text-gray-500 hover:text-gray-700">Edit</button><button class="text-xs text-red-500 hover:text-red-700">Delete</button></div></td></tr>
+            <tr class="hover:bg-gray-50"><td class="px-5 py-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-700 font-semibold text-xs">FW</div><span class="font-medium text-gray-900">Flutterwave</span></div></td><td class="px-5 py-3.5 text-gray-600">finance@flutterwave.com</td><td class="px-5 py-3.5 text-gray-600">Flutterwave Inc.</td><td class="px-5 py-3.5 text-gray-500">Mar 18, 2025</td><td class="px-5 py-3.5 text-gray-600">3 invoices</td><td class="px-5 py-3.5 text-right"><div class="flex items-center gap-3 justify-end"><button class="text-xs text-gray-500 hover:text-gray-700">Edit</button><button class="text-xs text-red-500 hover:text-red-700">Delete</button></div></td></tr>
+            <tr class="hover:bg-gray-50"><td class="px-5 py-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-700 font-semibold text-xs">KG</div><span class="font-medium text-gray-900">Konga Online</span></div></td><td class="px-5 py-3.5 text-gray-600">vendor@konga.com</td><td class="px-5 py-3.5 text-gray-600">Konga Online Ltd.</td><td class="px-5 py-3.5 text-gray-500">Apr 5, 2025</td><td class="px-5 py-3.5 text-gray-600">1 invoice</td><td class="px-5 py-3.5 text-right"><div class="flex items-center gap-3 justify-end"><button class="text-xs text-gray-500 hover:text-gray-700">Edit</button><button class="text-xs text-red-500 hover:text-red-700">Delete</button></div></td></tr>
+            <tr class="hover:bg-gray-50"><td class="px-5 py-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-700 font-semibold text-xs">IS</div><span class="font-medium text-gray-900">Interswitch</span></div></td><td class="px-5 py-3.5 text-gray-600">vendors@interswitch.com</td><td class="px-5 py-3.5 text-gray-600">Interswitch Group</td><td class="px-5 py-3.5 text-gray-500">Apr 20, 2025</td><td class="px-5 py-3.5 text-gray-600">1 invoice</td><td class="px-5 py-3.5 text-right"><div class="flex items-center gap-3 justify-end"><button class="text-xs text-gray-500 hover:text-gray-700">Edit</button><button class="text-xs text-red-500 hover:text-red-700">Delete</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAY ADVANCE -->
+    <div id="dash-advance" class="dash-page">
+      <div class="mb-8"><h1 class="text-2xl font-bold text-gray-900">Instant Advance</h1><p class="text-gray-500 text-sm mt-1">Get paid before your client does</p></div>
+      <div class="bg-violet-50 border border-violet-100 rounded-xl p-5 mb-8 flex items-start gap-4">
+        <div class="w-10 h-10 bg-violet-600 rounded-lg flex items-center justify-center shrink-0"><svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+        <div><p class="font-semibold text-violet-900">How it works</p><p class="text-violet-700 text-sm mt-1">Request an advance on any sent invoice. We pay you the invoice amount minus a 2.5% advance fee — instantly. When the client pays, the amount goes to us. You keep the difference.</p></div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-white rounded-xl border border-gray-100 p-5 text-center"><div class="text-2xl font-black text-violet-100 mb-2">01</div><h3 class="font-semibold text-gray-900 mb-1">Request</h3><p class="text-gray-500 text-xs">Select a sent invoice and request an advance from the invoice detail page.</p></div>
+        <div class="bg-white rounded-xl border border-gray-100 p-5 text-center"><div class="text-2xl font-black text-violet-100 mb-2">02</div><h3 class="font-semibold text-gray-900 mb-1">Review</h3><p class="text-gray-500 text-xs">We review your request within 24 hours and verify the invoice with your client.</p></div>
+        <div class="bg-white rounded-xl border border-gray-100 p-5 text-center"><div class="text-2xl font-black text-violet-100 mb-2">03</div><h3 class="font-semibold text-gray-900 mb-1">Get paid</h3><p class="text-gray-500 text-xs">Money hits your wallet instantly on approval. Withdraw to your bank right away.</p></div>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-100"><h2 class="font-semibold text-gray-900">Eligible invoices</h2><p class="text-gray-500 text-xs mt-0.5">Sent invoices you can request an advance on</p></div>
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 border-b border-gray-100"><tr><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Invoice</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Client</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Amount</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">You receive</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Due date</th><th class="px-5 py-3"></th></tr></thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr class="hover:bg-gray-50"><td class="px-5 py-3.5 font-medium text-gray-900">INV-005</td><td class="px-5 py-3.5 text-gray-700">MTN Nigeria</td><td class="px-5 py-3.5 text-gray-900">₦152,250</td><td class="px-5 py-3.5 text-green-700 font-medium">₦148,444</td><td class="px-5 py-3.5 text-gray-500">May 25, 2025</td><td class="px-5 py-3.5 text-right"><button class="bg-violet-600 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-violet-700 transition-colors font-medium">Request advance</button></td></tr>
+            <tr class="hover:bg-gray-50"><td class="px-5 py-3.5 font-medium text-gray-900">INV-004</td><td class="px-5 py-3.5 text-gray-700">Flutterwave</td><td class="px-5 py-3.5 text-gray-900">₦243,600</td><td class="px-5 py-3.5 text-green-700 font-medium">₦237,510</td><td class="px-5 py-3.5 text-gray-500">May 30, 2025</td><td class="px-5 py-3.5 text-right"><button class="bg-violet-600 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-violet-700 transition-colors font-medium">Request advance</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- WITHDRAWALS -->
+    <div id="dash-withdrawals" class="dash-page">
+      <div class="mb-8"><h1 class="text-2xl font-bold text-gray-900">Withdrawals</h1><p class="text-gray-500 text-sm mt-1">Transfer earnings to your bank account</p></div>
+      <div class="grid md:grid-cols-2 gap-4 mb-8">
+        <div class="bg-white rounded-xl border border-gray-100 p-6"><p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Available Balance</p><p class="text-3xl font-bold text-violet-600 mb-1">₦284,750</p><p class="text-sm text-gray-400">Ready to withdraw</p></div>
+        <div class="bg-white rounded-xl border border-gray-100 p-6"><p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Total Paid Out</p><p class="text-3xl font-bold text-gray-900 mb-1">₦955,750</p><p class="text-sm text-gray-400">Lifetime withdrawals</p></div>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl border border-gray-100 p-6">
+            <h2 class="font-semibold text-gray-900 mb-4">Withdraw funds</h2>
+            <div class="space-y-4">
+              <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Amount (₦)</label><input type="number" placeholder="Enter amount" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"/><p class="text-xs text-gray-400 mt-1">Max: ₦284,750</p></div>
+              <div class="bg-gray-50 rounded-lg p-3"><p class="text-xs font-medium text-gray-500 mb-1">Destination account</p><p class="text-sm font-medium text-gray-900">GTBank · 0123456789</p><p class="text-xs text-gray-500">Temi Adeleke</p></div>
+              <button class="w-full bg-violet-600 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-violet-700 transition-colors">Withdraw now</button>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+            <div class="px-5 py-4 border-b border-gray-100"><h2 class="font-semibold text-gray-900">Withdrawal history</h2></div>
+            <table class="w-full text-sm">
+              <thead class="bg-gray-50 border-b border-gray-100"><tr><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Date</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Amount</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Bank</th><th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Status</th></tr></thead>
+              <tbody class="divide-y divide-gray-50">
+                <tr class="hover:bg-gray-50"><td class="px-5 py-3.5 text-gray-500">May 18, 2025</td><td class="px-5 py-3.5 font-medium text-gray-900">₦120,000</td><td class="px-5 py-3.5 text-gray-600">GTBank · ****6789</td><td class="px-5 py-3.5"><span class="bg-green-50 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Success</span></td></tr>
+                <tr class="hover:bg-gray-50"><td class="px-5 py-3.5 text-gray-500">May 12, 2025</td><td class="px-5 py-3.5 font-medium text-gray-900">₦75,000</td><td class="px-5 py-3.5 text-gray-600">GTBank · ****6789</td><td class="px-5 py-3.5"><span class="bg-green-50 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Success</span></td></tr>
+                <tr class="hover:bg-gray-50"><td class="px-5 py-3.5 text-gray-500">May 5, 2025</td><td class="px-5 py-3.5 font-medium text-gray-900">₦50,000</td><td class="px-5 py-3.5 text-gray-600">GTBank · ****6789</td><td class="px-5 py-3.5"><span class="bg-yellow-50 text-yellow-700 text-xs px-2.5 py-1 rounded-full font-medium">Pending</span></td></tr>
+                <tr class="hover:bg-gray-50"><td class="px-5 py-3.5 text-gray-500">Apr 28, 2025</td><td class="px-5 py-3.5 font-medium text-gray-900">₦200,000</td><td class="px-5 py-3.5 text-gray-600">GTBank · ****6789</td><td class="px-5 py-3.5"><span class="bg-green-50 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Success</span></td></tr>
+                <tr class="hover:bg-gray-50"><td class="px-5 py-3.5 text-gray-500">Apr 15, 2025</td><td class="px-5 py-3.5 font-medium text-gray-900">₦85,000</td><td class="px-5 py-3.5 text-gray-600">GTBank · ****6789</td><td class="px-5 py-3.5"><span class="bg-red-50 text-red-700 text-xs px-2.5 py-1 rounded-full font-medium">Failed</span></td></tr>
+                <tr class="hover:bg-gray-50"><td class="px-5 py-3.5 text-gray-500">Apr 2, 2025</td><td class="px-5 py-3.5 font-medium text-gray-900">₦425,750</td><td class="px-5 py-3.5 text-gray-600">GTBank · ****6789</td><td class="px-5 py-3.5"><span class="bg-green-50 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Success</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div><!-- end dashboard shell -->
+
+<!-- ===== PUBLIC INVOICE PAGE ===== -->
+<div id="page-invoice-public" class="page min-h-screen bg-gray-50">
+  <div class="max-w-2xl mx-auto px-4 py-10">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 mb-2"><div class="w-7 h-7 bg-violet-600 rounded-lg flex items-center justify-center"><svg class="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div><span class="font-bold text-gray-900">CreatorPay</span></div>
+      <span class="bg-green-50 text-green-700 text-xs px-3 py-1 rounded-full font-medium">Paid</span>
+    </div>
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="px-8 py-6 border-b border-gray-100">
+        <div class="flex items-start justify-between">
+          <div><h1 class="text-xl font-bold text-gray-900">Invoice INV-006</h1><p class="text-gray-500 text-sm mt-1">Issued May 6, 2025 · Due May 20, 2025</p></div>
+          <div class="text-right"><p class="text-xs text-gray-400">Total amount</p><p class="text-2xl font-bold text-gray-900">₦197,925</p></div>
+        </div>
+      </div>
+      <div class="px-8 py-6 grid grid-cols-2 gap-6 border-b border-gray-100">
+        <div><p class="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">From</p><p class="font-semibold text-gray-900">Temi Adeleke</p><p class="text-sm text-gray-500">temi@creative.ng</p><p class="text-sm text-gray-500">+234 801 234 5678</p></div>
+        <div><p class="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">Bill to</p><p class="font-semibold text-gray-900">Oando PLC</p><p class="text-sm text-gray-500">accounts@oando.com</p></div>
+      </div>
+      <div class="px-8 py-6 border-b border-gray-100">
+        <table class="w-full text-sm">
+          <thead><tr class="text-xs text-gray-500 border-b border-gray-100"><th class="text-left pb-2 font-medium">Description</th><th class="text-center pb-2 font-medium">Qty</th><th class="text-right pb-2 font-medium">Unit price</th><th class="text-right pb-2 font-medium">Total</th></tr></thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr><td class="py-3 text-gray-900">Brand photography shoot</td><td class="py-3 text-center text-gray-500">1</td><td class="py-3 text-right text-gray-900">₦150,000</td><td class="py-3 text-right text-gray-900">₦150,000</td></tr>
+            <tr><td class="py-3 text-gray-900">Post-production editing</td><td class="py-3 text-center text-gray-500">1</td><td class="py-3 text-right text-gray-900">₦45,000</td><td class="py-3 text-right text-gray-900">₦45,000</td></tr>
+          </tbody>
+        </table>
+        <div class="mt-4 space-y-1.5 text-sm border-t border-gray-100 pt-4">
+          <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span class="text-gray-900">₦195,000</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Platform fee (1.5%)</span><span class="text-gray-900">₦2,925</span></div>
+          <div class="flex justify-between font-bold text-base pt-2 border-t border-gray-100"><span>Total</span><span>₦197,925</span></div>
+        </div>
+      </div>
+      <div class="px-8 py-6">
+        <div class="bg-green-50 border border-green-100 rounded-xl px-5 py-4 flex items-center gap-3">
+          <svg class="h-5 w-5 text-green-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div><p class="font-semibold text-green-900 text-sm">Payment received</p><p class="text-green-700 text-xs mt-0.5">This invoice was paid on May 18, 2025. Thank you!</p></div>
+        </div>
+        <p class="text-center text-xs text-gray-400 mt-4">Powered by <span class="text-violet-600 font-medium">CreatorPay</span> · Secure payments for African creatives</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== JAVASCRIPT ROUTER ===== -->
+<script>
+  const PAGES = ['landing','login','signup','onboarding','dashboard-shell','invoice-public'];
+  const DASH_PAGES = ['home','invoices','invoices-new','invoice-detail','clients','advance','withdrawals'];
+
+  function navigate(target) {
+    PAGES.forEach(p => {
+      const el = document.getElementById('page-' + p);
+      if (el) el.classList.remove('active');
+    });
+    if (target === 'dashboard') {
+      document.getElementById('page-dashboard-shell').classList.add('active');
+      showDash('home');
+    } else if (target === 'invoice-public') {
+      document.getElementById('page-invoice-public').classList.add('active');
+    } else {
+      const el = document.getElementById('page-' + target);
+      if (el) el.classList.add('active');
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function showDash(tab) {
+    DASH_PAGES.forEach(p => {
+      const el = document.getElementById('dash-' + p);
+      if (el) el.classList.remove('active');
+    });
+    const el = document.getElementById('dash-' + tab);
+    if (el) el.classList.add('active');
+    // update nav active state
+    const navMap = {'home':'nav-home','invoices':'nav-invoices','invoices-new':'nav-invoices','invoice-detail':'nav-invoices','clients':'nav-clients','advance':'nav-advance','withdrawals':'nav-withdrawals'};
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('bg-violet-50','text-violet-700'));
+    const activeNav = document.getElementById(navMap[tab]);
+    if (activeNav) activeNav.classList.add('bg-violet-50','text-violet-700');
+    window.scrollTo(0, 0);
+  }
+
+  function obNext() {
+    document.getElementById('ob-step1').classList.add('hidden');
+    document.getElementById('ob-step2').classList.remove('hidden');
+    document.getElementById('ob-step2-dot').className = 'w-8 h-8 rounded-full bg-violet-600 text-white text-sm font-semibold flex items-center justify-center';
+    document.getElementById('ob-step2-label').className = 'text-sm font-medium text-gray-700';
+  }
+
+  function obBack() {
+    document.getElementById('ob-step2').classList.add('hidden');
+    document.getElementById('ob-step1').classList.remove('hidden');
+    document.getElementById('ob-step2-dot').className = 'w-8 h-8 rounded-full bg-gray-100 text-gray-400 text-sm font-semibold flex items-center justify-center';
+    document.getElementById('ob-step2-label').className = 'text-sm text-gray-400';
+  }
+
+  // Boot
+  navigate('landing');
+</script>
+</body>
+</html>
