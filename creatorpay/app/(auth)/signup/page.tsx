@@ -39,7 +39,11 @@ export default function SignupPage() {
       })
 
       if (signInError) {
-        setError(signInError.message)
+        if (signInError.message.toLowerCase().includes('email not confirmed')) {
+          setError('Check your email for a confirmation link, then sign in.')
+        } else {
+          setError(signInError.message)
+        }
         return
       }
 
