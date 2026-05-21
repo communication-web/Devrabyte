@@ -24,15 +24,18 @@ export default function WithdrawalsPage() {
   const [success, setSuccess] = useState('')
 
   async function fetchData() {
-    const [statsRes, withdrawalsRes, profileRes] = await Promise.all([
-      fetch('/api/dashboard/stats').then((r) => r.json()),
-      fetch('/api/withdrawals').then((r) => r.json()),
-      fetch('/api/profile').then((r) => r.json()),
-    ])
-    setStats({ available_balance: statsRes.available_balance || 0, paid_out: statsRes.paid_out || 0 })
-    setWithdrawals(withdrawalsRes.withdrawals || [])
-    setUserInfo(profileRes.user || null)
-    setLoading(false)
+    try {
+      const [statsRes, withdrawalsRes, profileRes] = await Promise.all([
+        fetch('/api/dashboard/stats').then((r) => r.json()).catch(() => ({})),
+        fetch('/api/withdrawals').then((r) => r.json()).catch(() => ({})),
+        fetch('/api/profile').then((r) => r.json()).catch(() => ({})),
+      ])
+      setStats({ available_balance: statsRes.available_balance || 0, paid_out: statsRes.paid_out || 0 })
+      setWithdrawals(withdrawalsRes.withdrawals || [])
+      setUserInfo(profileRes.user || null)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => { fetchData() }, [])
