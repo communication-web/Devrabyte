@@ -1,26 +1,42 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Upload, X, Image as ImageIcon } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface InvoiceBranding {
   invoice_brand_color: string
   invoice_default_notes: string
   invoice_default_terms: string
+  invoice_logo_url: string | null
 }
 
-function InvoicePreview({ color, notes, terms }: { color: string; notes: string; terms: string }) {
+function InvoicePreview({
+  color,
+  notes,
+  terms,
+  logoUrl,
+}: {
+  color: string
+  notes: string
+  terms: string
+  logoUrl: string | null
+}) {
   return (
     <div className="rounded-xl border border-white/[0.07] bg-zinc-950 overflow-hidden text-xs">
       <div className="h-2" style={{ backgroundColor: color }} />
       <div className="p-4 space-y-3">
         <div className="flex items-start justify-between">
           <div>
-            <p className="font-bold text-sm" style={{ color }}>INVOICE</p>
+            {logoUrl ? (
+              <img src={logoUrl} alt="Logo" className="h-8 max-w-[100px] object-contain mb-1" />
+            ) : (
+              <p className="font-bold text-sm" style={{ color }}>INVOICE</p>
+            )}
             <p className="text-zinc-500 mt-0.5">#INV-0042</p>
           </div>
           <div className="text-right text-zinc-500">
@@ -90,10 +106,14 @@ export default function InvoiceSettingsPage() {
     invoice_brand_color: '#7c3aed',
     invoice_default_notes: '',
     invoice_default_terms: '',
+    invoice_logo_url: null,
   })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+  const [dragOver, setDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     fetch('/api/profile')
@@ -104,6 +124,7 @@ export default function InvoiceSettingsPage() {
             invoice_brand_color: user.invoice_brand_color || '#7c3aed',
             invoice_default_notes: user.invoice_default_notes || '',
             invoice_default_terms: user.invoice_default_terms || '',
+            invoice_logo_url: user.invoice_logo_url || null,
           })
         }
       })
@@ -112,7 +133,53 @@ export default function InvoiceSettingsPage() {
 
   function showToast(type: 'success' | 'error', message: string) {
     setToast({ type, message })
-    setTimeout(() => setToast(null), 3000)
+    setTimeout(() => setToast(null), 3500)
+  }
+
+  async function uploadLogo(file: File) {
+    setUploading(true)
+    try {
+      const fd = new FormData()
+      fd.append('file', file)
+      const res = await fetch('/api/settings/invoice-logo', { method: 'POST', body: fd })
+      const data = await res.json()
+      if (data.url) {
+        setForm((f) => ({ ...f, invoice_logo_url: data.url }))
+        showToast('success', 'Logo uploaded.')
+      } else {
+        showToast('error', data.error || 'Upload failed.')
+      }
+    } catch {
+      showToast('error', 'Upload failed. Please try again.')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  async function removeLogo() {
+    setUploading(true)
+    try {
+      await fetch('/api/settings/invoice-logo', { method: 'DELETE' })
+      setForm((f) => ({ ...f, invoice_logo_url: null }))
+      showToast('success', 'Logo removed.')
+    } catch {
+      showToast('error', 'Could not remove logo.')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) uploadLogo(file)
+    e.target.value = ''
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault()
+    setDragOver(false)
+    const file = e.dataTransfer.files?.[0]
+    if (file) uploadLogo(file)
   }
 
   async function handleSave() {
@@ -121,7 +188,11 @@ export default function InvoiceSettingsPage() {
       const res = await fetch('/api/settings/invoice-branding', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          invoice_brand_color: form.invoice_brand_color,
+          invoice_default_notes: form.invoice_default_notes,
+          invoice_default_terms: form.invoice_default_terms,
+        }),
       })
       const data = await res.json()
       if (data.success) showToast('success', 'Invoice branding saved.')
@@ -163,12 +234,84 @@ export default function InvoiceSettingsPage() {
           <CardContent className="space-y-5">
             {loading ? (
               <div className="space-y-4">
-                {[...Array(3)].map((_, i) => (
+                {[...Array(4)].map((_, i) => (
                   <div key={i} className="h-20 bg-zinc-800 rounded-lg animate-pulse" />
                 ))}
               </div>
             ) : (
               <>
+                {/* Logo upload */}
+                <div>
+                  <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">
+                    Business logo
+                  </label>
+
+                  {form.invoice_logo_url ? (
+                    <div className="flex items-center gap-3 p-3 rounded-lg border border-white/[0.07] bg-zinc-800/40">
+                      <img
+                        src={form.invoice_logo_url}
+                        alt="Logo"
+                        className="h-10 max-w-[120px] object-contain rounded"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-zinc-400 truncate">Logo uploaded</p>
+                        <p className="text-[10px] text-zinc-600 mt-0.5">Shown on all invoices</p>
+                      </div>
+                      <div className="flex gap-2 shrink-0">
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={uploading}
+                          className="text-xs text-violet-400 hover:text-violet-300 font-semibold transition-colors disabled:opacity-50"
+                        >
+                          Replace
+                        </button>
+                        <button
+                          onClick={removeLogo}
+                          disabled={uploading}
+                          className="text-xs text-zinc-500 hover:text-red-400 transition-colors disabled:opacity-50"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => fileInputRef.current?.click()}
+                      onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
+                      onDragLeave={() => setDragOver(false)}
+                      onDrop={handleDrop}
+                      className={`flex flex-col items-center justify-center gap-2 p-6 rounded-lg border-2 border-dashed cursor-pointer transition-all ${
+                        dragOver
+                          ? 'border-violet-500/60 bg-violet-500/5'
+                          : 'border-white/[0.08] hover:border-white/[0.16] hover:bg-white/[0.02]'
+                      } ${uploading ? 'pointer-events-none opacity-60' : ''}`}
+                    >
+                      {uploading ? (
+                        <div className="w-5 h-5 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center">
+                          <ImageIcon className="h-4 w-4 text-zinc-500" />
+                        </div>
+                      )}
+                      <div className="text-center">
+                        <p className="text-xs font-semibold text-zinc-400">
+                          {uploading ? 'Uploading…' : 'Drop image or click to upload'}
+                        </p>
+                        <p className="text-[10px] text-zinc-600 mt-0.5">PNG, JPG, WebP, SVG · max 2 MB</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/svg+xml"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </div>
+
+                {/* Accent color */}
                 <div>
                   <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">
                     Invoice accent color
@@ -216,6 +359,7 @@ export default function InvoiceSettingsPage() {
               color={form.invoice_brand_color}
               notes={form.invoice_default_notes}
               terms={form.invoice_default_terms}
+              logoUrl={form.invoice_logo_url}
             />
           )}
         </div>

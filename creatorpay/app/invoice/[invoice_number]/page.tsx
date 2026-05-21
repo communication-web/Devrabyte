@@ -14,7 +14,7 @@ export default async function PublicInvoicePage({
 
   const { data: invoice } = await supabase
     .from('cp_invoices')
-    .select('*, cp_clients(*), cp_users(business_name, full_name)')
+    .select('*, cp_clients(*), cp_users(business_name, full_name, invoice_logo_url, invoice_brand_color)')
     .eq('invoice_number', invoice_number)
     .single()
 
@@ -22,12 +22,14 @@ export default async function PublicInvoicePage({
 
   const inv = invoice as Invoice & {
     cp_clients: { name: string; email: string; company: string | null } | null
-    cp_users: { business_name: string | null; full_name: string } | null
+    cp_users: { business_name: string | null; full_name: string; invoice_logo_url?: string | null; invoice_brand_color?: string | null } | null
     currency?: string
   }
 
   const isPaid = inv.status === 'paid'
   const creatorName = inv.cp_users?.business_name || inv.cp_users?.full_name || 'Creator'
+  const logoUrl = inv.cp_users?.invoice_logo_url || null
+  const brandColor = inv.cp_users?.invoice_brand_color || '#7c3aed'
   const currency = inv.currency || 'NGN'
   const currencySymbol = currency === 'USD' ? '$' : '₦'
 
@@ -60,11 +62,15 @@ export default async function PublicInvoicePage({
 
         <div className="bg-zinc-900 rounded-2xl border border-white/[0.07] overflow-hidden">
           {/* Invoice header */}
-          <div className="h-1 bg-violet-600" />
+          <div className="h-1" style={{ backgroundColor: brandColor }} />
           <div className="px-8 py-7 border-b border-white/[0.05]">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Invoice</p>
+                {logoUrl ? (
+                  <img src={logoUrl} alt={creatorName} className="h-10 max-w-[140px] object-contain mb-2" />
+                ) : (
+                  <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Invoice</p>
+                )}
                 <p className="text-xl font-bold text-white">{inv.invoice_number}</p>
                 <p className="text-sm text-zinc-500 mt-1">From {creatorName}</p>
               </div>

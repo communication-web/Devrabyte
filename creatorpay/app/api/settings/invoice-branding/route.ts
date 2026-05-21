@@ -16,6 +16,7 @@ export async function PATCH(request: Request) {
   if (body.invoice_brand_color !== undefined) updates.invoice_brand_color = body.invoice_brand_color
   if (body.invoice_default_notes !== undefined) updates.invoice_default_notes = body.invoice_default_notes
   if (body.invoice_default_terms !== undefined) updates.invoice_default_terms = body.invoice_default_terms
+  // invoice_logo_url is managed by /api/settings/invoice-logo
 
   const { error } = await supabase
     .from('cp_users')
