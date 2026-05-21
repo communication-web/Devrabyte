@@ -7,6 +7,7 @@ export type CreativeCategory =
   | 'other'
 
 export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue'
+export type EscrowStatus = 'none' | 'awaiting_advance' | 'advance_paid' | 'delivered' | 'confirmed' | 'completed' | 'disputed'
 export type TransactionStatus = 'pending' | 'success' | 'failed'
 export type WithdrawalStatus = 'pending' | 'success' | 'failed' | 'reversed'
 export type AdvanceStatus = 'requested' | 'approved' | 'paid_out' | 'repaid'
@@ -59,6 +60,50 @@ export interface Invoice {
   advance_paid_out: boolean
   created_at: string
   clients?: Client
+  // Escrow / Protected Payment fields
+  escrow_enabled?: boolean
+  advance_percentage?: number
+  advance_paid_amount?: number
+  balance_paid_amount?: number
+  advance_payment_reference?: string | null
+  balance_payment_reference?: string | null
+  advance_payment_link?: string | null
+  balance_payment_link?: string | null
+  delivered_at?: string | null
+  confirmed_at?: string | null
+  escrow_status?: EscrowStatus
+  contract_signed_at?: string | null
+  contract_pdf_url?: string | null
+}
+
+export interface Dispute {
+  id: string
+  invoice_id: string
+  creator_id: string
+  client_email: string
+  client_name: string
+  raised_by: 'client' | 'creator'
+  reason: string
+  details: string | null
+  status: 'open' | 'under_review' | 'resolved_creator' | 'resolved_client' | 'escalated'
+  resolution_notes: string | null
+  evidence_urls: string[] | null
+  created_at: string
+  updated_at: string
+}
+
+export interface Contract {
+  id: string
+  invoice_id: string
+  creator_id: string
+  client_email: string
+  client_name: string
+  contract_html: string | null
+  pdf_url: string | null
+  creator_signed_at: string
+  client_viewed_at: string | null
+  client_accepted_at: string | null
+  created_at: string
 }
 
 export interface Transaction {
