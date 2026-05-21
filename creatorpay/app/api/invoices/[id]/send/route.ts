@@ -1,7 +1,9 @@
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { paystack } from '@/lib/paystack'
-import { generateReference, toKobo } from '@/lib/utils'
+import { generateReference, toKobo, formatDate } from '@/lib/utils'
+import { sendInvoiceEmail } from '@/lib/email'
+import { LineItem } from '@/types'
 
 export async function POST(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -11,7 +13,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
 
   const { data: invoice } = await supabase
     .from('cp_invoices')
-    .select('*, cp_clients(email)')
+    .select('*, cp_clients(email, name)')
     .eq('id', id)
     .eq('creator_id', user.id)
     .single()
@@ -21,17 +23,18 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
 
   const { data: userData } = await supabase
     .from('cp_users')
-    .select('paystack_subaccount_code, email')
+    .select('paystack_subaccount_code, email, full_name, business_name, invoice_default_notes')
     .eq('id', user.id)
     .single()
 
   const reference = invoice.payment_reference || generateReference()
   let paystack_payment_link = invoice.paystack_payment_link
+  const clientEmail = (invoice.cp_clients as { email: string; name: string } | null)?.email
 
   if (userData?.paystack_subaccount_code) {
     try {
       const payInit = await paystack.initializeTransaction({
-        email: (invoice.clients as { email: string } | null)?.email || userData.email,
+        email: clientEmail || userData.email,
         amount: toKobo(invoice.total),
         reference,
         subaccount: userData.paystack_subaccount_code,
@@ -51,6 +54,23 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
     .eq('id', id)
 
   if (error) return Response.json({ error: error.message }, { status: 500 })
+
+  // Send invoice email to client
+  if (paystack_payment_link && clientEmail) {
+    const client = invoice.cp_clients as { email: string; name: string } | null
+    sendInvoiceEmail({
+      to: clientEmail,
+      clientName: client?.name || 'Client',
+      creatorName: userData?.business_name || userData?.full_name || 'Your service provider',
+      invoiceNumber: invoice.invoice_number,
+      total: invoice.total,
+      dueDate: formatDate(invoice.due_date),
+      paymentLink: paystack_payment_link,
+      lineItems: invoice.line_items as LineItem[],
+      currency: invoice.currency || 'NGN',
+      notes: userData?.invoice_default_notes || undefined,
+    }).catch((err) => console.error('Invoice email failed:', err))
+  }
 
   return Response.json({ success: true, paystack_payment_link })
 }

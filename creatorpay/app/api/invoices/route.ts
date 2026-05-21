@@ -1,8 +1,9 @@
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { paystack } from '@/lib/paystack'
-import { calculateFees, generateReference, toKobo } from '@/lib/utils'
+import { calculateFees, generateReference, toKobo, formatDate } from '@/lib/utils'
 import { LineItem } from '@/types'
+import { sendInvoiceEmail } from '@/lib/email'
 
 async function getNextInvoiceNumber(supabase: Awaited<ReturnType<typeof createClient>>, userId: string): Promise<string> {
   const { count } = await supabase
@@ -113,6 +114,36 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (error) return Response.json({ error: error.message }, { status: 500 })
+
+  // Send invoice email to client
+  if (action === 'send' && resolvedClientId && invoiceData.paystack_payment_link) {
+    const { data: clientData } = await supabase
+      .from('cp_clients')
+      .select('email, name')
+      .eq('id', resolvedClientId)
+      .single()
+
+    const { data: userData } = await supabase
+      .from('cp_users')
+      .select('full_name, business_name, invoice_default_notes')
+      .eq('id', user.id)
+      .single()
+
+    if (clientData?.email) {
+      sendInvoiceEmail({
+        to: clientData.email,
+        clientName: clientData.name,
+        creatorName: userData?.business_name || userData?.full_name || 'Your service provider',
+        invoiceNumber: invoice_number,
+        total: total,
+        dueDate: formatDate(due_date),
+        paymentLink: invoiceData.paystack_payment_link as string,
+        lineItems: items,
+        currency: currency || 'NGN',
+        notes: userData?.invoice_default_notes || undefined,
+      }).catch((err) => console.error('Invoice email failed:', err))
+    }
+  }
 
   return Response.json({ invoice }, { status: 201 })
 }
