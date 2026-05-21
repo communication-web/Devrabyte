@@ -95,7 +95,8 @@ export async function GET() {
     // Top 5 clients by revenue
     const clientRevenue: Record<string, number> = {}
     for (const inv of (topClientsRes.data || [])) {
-      const name = (inv.cp_clients as { name: string } | null)?.name || 'Unknown'
+      const clientData = inv.cp_clients as unknown as { name: string } | null
+      const name = clientData?.name || 'Unknown'
       clientRevenue[name] = (clientRevenue[name] || 0) + (inv.total || 0)
     }
     const top_clients = Object.entries(clientRevenue)
