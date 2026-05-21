@@ -14,10 +14,6 @@ import {
 } from 'lucide-react'
 import type { Notification, NotificationType } from '@/types'
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
 function timeAgo(dateStr: string): string {
   const date = new Date(dateStr)
   const now = new Date()
@@ -38,10 +34,6 @@ function timeAgo(dateStr: string): string {
   return `${years} year${years === 1 ? '' : 's'} ago`
 }
 
-// ---------------------------------------------------------------------------
-// Icon + colour config
-// ---------------------------------------------------------------------------
-
 type IconConfig = {
   Icon: React.ElementType
   bgClass: string
@@ -49,46 +41,14 @@ type IconConfig = {
 }
 
 const typeConfig: Record<NotificationType, IconConfig> = {
-  invoice_paid: {
-    Icon: CheckCircle2,
-    bgClass: 'bg-green-100',
-    iconClass: 'text-green-600',
-  },
-  invoice_overdue: {
-    Icon: AlertCircle,
-    bgClass: 'bg-red-100',
-    iconClass: 'text-red-600',
-  },
-  advance_approved: {
-    Icon: Zap,
-    bgClass: 'bg-violet-100',
-    iconClass: 'text-violet-600',
-  },
-  advance_rejected: {
-    Icon: XCircle,
-    bgClass: 'bg-red-100',
-    iconClass: 'text-red-600',
-  },
-  withdrawal_success: {
-    Icon: CreditCard,
-    bgClass: 'bg-green-100',
-    iconClass: 'text-green-600',
-  },
-  withdrawal_failed: {
-    Icon: CreditCard,
-    bgClass: 'bg-red-100',
-    iconClass: 'text-red-600',
-  },
-  system: {
-    Icon: Bell,
-    bgClass: 'bg-blue-100',
-    iconClass: 'text-blue-600',
-  },
+  invoice_paid: { Icon: CheckCircle2, bgClass: 'bg-emerald-500/10', iconClass: 'text-emerald-400' },
+  invoice_overdue: { Icon: AlertCircle, bgClass: 'bg-red-500/10', iconClass: 'text-red-400' },
+  advance_approved: { Icon: Zap, bgClass: 'bg-violet-500/10', iconClass: 'text-violet-400' },
+  advance_rejected: { Icon: XCircle, bgClass: 'bg-red-500/10', iconClass: 'text-red-400' },
+  withdrawal_success: { Icon: CreditCard, bgClass: 'bg-emerald-500/10', iconClass: 'text-emerald-400' },
+  withdrawal_failed: { Icon: CreditCard, bgClass: 'bg-red-500/10', iconClass: 'text-red-400' },
+  system: { Icon: Bell, bgClass: 'bg-blue-500/10', iconClass: 'text-blue-400' },
 }
-
-// ---------------------------------------------------------------------------
-// Fallback demo notifications (shown when the API returns an empty list)
-// ---------------------------------------------------------------------------
 
 const DEMO_NOTIFICATIONS: Notification[] = [
   {
@@ -99,7 +59,7 @@ const DEMO_NOTIFICATIONS: Notification[] = [
     body: 'Acme Corp paid invoice #INV-0012 of ₦150,000.',
     read: false,
     metadata: {},
-    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 h ago
+    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
   },
   {
     id: 'demo-2',
@@ -109,7 +69,7 @@ const DEMO_NOTIFICATIONS: Notification[] = [
     body: 'Your advance request of ₦50,000 has been approved and will be disbursed shortly.',
     read: false,
     metadata: {},
-    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
+    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
   },
   {
     id: 'demo-3',
@@ -119,7 +79,7 @@ const DEMO_NOTIFICATIONS: Notification[] = [
     body: 'Invoice #INV-0009 to Bright Media is now 7 days overdue.',
     read: true,
     metadata: {},
-    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
   },
   {
     id: 'demo-4',
@@ -129,13 +89,9 @@ const DEMO_NOTIFICATIONS: Notification[] = [
     body: '₦30,000 has been sent to your GTBank account ending in 4521.',
     read: true,
     metadata: {},
-    created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
+    created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
   },
 ]
-
-// ---------------------------------------------------------------------------
-// Page component
-// ---------------------------------------------------------------------------
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<Notification[]>([])
@@ -150,7 +106,6 @@ export default function NotificationsPage() {
       const data = await res.json()
       const list: Notification[] = data.notifications ?? []
       if (list.length === 0) {
-        // Use demo data so the UI looks populated during development
         setNotifications(DEMO_NOTIFICATIONS)
         setUnreadCount(DEMO_NOTIFICATIONS.filter((n) => !n.read).length)
       } else {
@@ -158,7 +113,6 @@ export default function NotificationsPage() {
         setUnreadCount(data.unread_count ?? 0)
       }
     } catch {
-      // Fallback to demo data on error too
       setNotifications(DEMO_NOTIFICATIONS)
       setUnreadCount(DEMO_NOTIFICATIONS.filter((n) => !n.read).length)
     } finally {
@@ -166,9 +120,7 @@ export default function NotificationsPage() {
     }
   }, [])
 
-  useEffect(() => {
-    fetchNotifications()
-  }, [fetchNotifications])
+  useEffect(() => { fetchNotifications() }, [fetchNotifications])
 
   const markAllRead = async () => {
     setMarkingAll(true)
@@ -178,7 +130,6 @@ export default function NotificationsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mark_all: true }),
       })
-      // Optimistic update for demo data; real data refetched below
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
       setUnreadCount(0)
       await fetchNotifications()
@@ -188,12 +139,8 @@ export default function NotificationsPage() {
   }
 
   const markRead = async (id: string) => {
-    // Optimistic update
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    )
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)))
     setUnreadCount((c) => Math.max(0, c - 1))
-
     try {
       await fetch('/api/notifications', {
         method: 'PATCH',
@@ -201,7 +148,6 @@ export default function NotificationsPage() {
         body: JSON.stringify({ id }),
       })
     } catch {
-      // If it fails, refetch to restore correct state
       fetchNotifications()
     }
   }
@@ -211,21 +157,15 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
+          <h1 className="text-2xl font-bold text-white">Notifications</h1>
           {unreadCount > 0 && (
-            <Badge className="bg-violet-600 text-white hover:bg-violet-700 text-xs px-2 py-0.5 rounded-full">
+            <Badge className="bg-violet-600 text-white text-xs px-2 py-0.5 rounded-full">
               {unreadCount} unread
             </Badge>
           )}
         </div>
         {unreadCount > 0 && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={markAllRead}
-            disabled={markingAll}
-            className="text-sm"
-          >
+          <Button variant="outline" size="sm" onClick={markAllRead} disabled={markingAll}>
             {markingAll ? 'Marking…' : 'Mark all as read'}
           </Button>
         )}
@@ -235,10 +175,7 @@ export default function NotificationsPage() {
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="h-20 rounded-xl bg-gray-100 animate-pulse"
-            />
+            <div key={i} className="h-20 rounded-xl bg-zinc-800 animate-pulse" />
           ))}
         </div>
       ) : notifications.length === 0 ? (
@@ -246,13 +183,9 @@ export default function NotificationsPage() {
       ) : (
         <Card>
           <CardContent className="p-0">
-            <div className="divide-y divide-gray-50">
+            <div className="divide-y divide-white/[0.05]">
               {notifications.map((n) => (
-                <NotificationRow
-                  key={n.id}
-                  notification={n}
-                  onMarkRead={markRead}
-                />
+                <NotificationRow key={n.id} notification={n} onMarkRead={markRead} />
               ))}
             </div>
           </CardContent>
@@ -261,10 +194,6 @@ export default function NotificationsPage() {
     </div>
   )
 }
-
-// ---------------------------------------------------------------------------
-// Notification row
-// ---------------------------------------------------------------------------
 
 function NotificationRow({
   notification: n,
@@ -276,40 +205,24 @@ function NotificationRow({
   const cfg = typeConfig[n.type] ?? typeConfig.system
   const { Icon, bgClass, iconClass } = cfg
 
-  const handleClick = () => {
-    if (!n.read) onMarkRead(n.id)
-  }
-
   return (
     <div
-      onClick={handleClick}
+      onClick={() => { if (!n.read) onMarkRead(n.id) }}
       className={[
         'flex items-start gap-4 px-5 py-4 transition-colors',
         n.read
-          ? 'bg-white hover:bg-gray-50'
-          : 'border-l-2 border-violet-500 bg-violet-50/30 hover:bg-violet-50/50',
-        !n.read ? 'cursor-pointer' : '',
-      ]
-        .filter(Boolean)
-        .join(' ')}
+          ? 'hover:bg-white/[0.04]'
+          : 'border-l-2 border-violet-500 bg-violet-500/5 hover:bg-violet-500/10 cursor-pointer',
+      ].filter(Boolean).join(' ')}
     >
-      {/* Icon */}
-      <div
-        className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${bgClass}`}
-      >
+      <div className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${bgClass}`}>
         <Icon size={18} className={iconClass} />
       </div>
-
-      {/* Text */}
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium text-gray-900 leading-snug">
-          {n.title}
-        </p>
-        <p className="mt-0.5 text-sm text-gray-500 leading-snug">{n.body}</p>
-        <p className="mt-1 text-xs text-gray-400">{timeAgo(n.created_at)}</p>
+        <p className="text-sm font-medium text-zinc-100 leading-snug">{n.title}</p>
+        <p className="mt-0.5 text-sm text-zinc-400 leading-snug">{n.body}</p>
+        <p className="mt-1 text-xs text-zinc-600">{timeAgo(n.created_at)}</p>
       </div>
-
-      {/* Unread dot */}
       {!n.read && (
         <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-violet-500" />
       )}
@@ -317,22 +230,15 @@ function NotificationRow({
   )
 }
 
-// ---------------------------------------------------------------------------
-// Empty state
-// ---------------------------------------------------------------------------
-
 function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-24 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-violet-100 mb-4">
-        <Bell size={28} className="text-violet-500" />
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-violet-500/10 mb-4">
+        <Bell size={28} className="text-violet-400" />
       </div>
-      <h3 className="text-base font-semibold text-gray-900">
-        You&apos;re all caught up
-      </h3>
-      <p className="mt-1 text-sm text-gray-400 max-w-xs">
-        No notifications yet. We&apos;ll let you know when something important
-        happens.
+      <h3 className="text-base font-semibold text-white">You&apos;re all caught up</h3>
+      <p className="mt-1 text-sm text-zinc-500 max-w-xs">
+        No notifications yet. We&apos;ll let you know when something important happens.
       </p>
     </div>
   )

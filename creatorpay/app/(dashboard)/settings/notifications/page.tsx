@@ -21,7 +21,7 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
       role="switch"
       aria-checked={checked}
       onClick={() => onChange(!checked)}
-      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${checked ? 'bg-violet-600' : 'bg-gray-200'}`}
+      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-zinc-900 ${checked ? 'bg-violet-600' : 'bg-zinc-700'}`}
     >
       <span className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${checked ? 'translate-x-5' : 'translate-x-0'}`} />
     </button>
@@ -30,10 +30,10 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
 
 function ToggleRow({ label, description, checked, onChange }: { label: string; description?: string; checked: boolean; onChange: (v: boolean) => void }) {
   return (
-    <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-gray-50 last:border-0">
+    <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-white/[0.05] last:border-0">
       <div>
-        <p className="text-sm font-medium text-gray-900">{label}</p>
-        {description && <p className="text-xs text-gray-400 mt-0.5">{description}</p>}
+        <p className="text-sm font-medium text-zinc-100">{label}</p>
+        {description && <p className="text-xs text-zinc-500 mt-0.5">{description}</p>}
       </div>
       <Toggle checked={checked} onChange={onChange} />
     </div>
@@ -121,18 +121,20 @@ export default function NotificationsSettingsPage() {
   return (
     <div className="max-w-xl space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/settings" className="p-2 hover:bg-white rounded-lg border border-transparent hover:border-gray-100 transition-all">
-          <ArrowLeft className="h-4 w-4 text-gray-400" />
+        <Link href="/settings" className="p-2 hover:bg-white/[0.06] rounded-lg border border-transparent hover:border-white/[0.07] transition-all">
+          <ArrowLeft className="h-4 w-4 text-zinc-400" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
-          <p className="text-gray-400 text-sm mt-0.5">Control which alerts you receive</p>
+          <h1 className="text-2xl font-bold text-white">Notifications</h1>
+          <p className="text-zinc-500 text-sm mt-0.5">Control which alerts you receive</p>
         </div>
       </div>
 
       {toast && (
         <div className={`flex items-center gap-2.5 rounded-lg px-4 py-3 text-sm font-medium border ${
-          toast.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200'
+          toast.type === 'success'
+            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+            : 'bg-red-500/10 text-red-400 border-red-500/20'
         }`}>
           {toast.type === 'success' ? <CheckCircle className="h-4 w-4 shrink-0" /> : <XCircle className="h-4 w-4 shrink-0" />}
           {toast.message}
@@ -140,12 +142,12 @@ export default function NotificationsSettingsPage() {
       )}
 
       {loading ? (
-        <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-          <div className="divide-y divide-gray-50">
+        <div className="bg-zinc-900 rounded-xl border border-white/[0.07] overflow-hidden">
+          <div className="divide-y divide-white/[0.05]">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="flex justify-between items-center px-5 py-4">
-                <div className="h-4 bg-gray-100 rounded w-40 animate-pulse" />
-                <div className="h-6 w-11 bg-gray-100 rounded-full animate-pulse" />
+                <div className="h-4 bg-zinc-800 rounded w-40 animate-pulse" />
+                <div className="h-6 w-11 bg-zinc-800 rounded-full animate-pulse" />
               </div>
             ))}
           </div>
@@ -153,9 +155,9 @@ export default function NotificationsSettingsPage() {
       ) : (
         <div className="space-y-4">
           {sections.map((section) => (
-            <div key={section.title} className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-              <div className="px-5 py-3.5 border-b border-gray-50">
-                <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{section.title}</h2>
+            <div key={section.title} className="bg-zinc-900 rounded-xl border border-white/[0.07] overflow-hidden">
+              <div className="px-5 py-3.5 border-b border-white/[0.05]">
+                <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">{section.title}</h2>
               </div>
               {section.rows.map((row) => (
                 <ToggleRow

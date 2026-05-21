@@ -4,14 +4,14 @@ import { cn } from '@/lib/utils'
 export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('rounded-xl border border-gray-100 bg-white', className)}
+      className={cn('rounded-xl border border-white/[0.07] bg-zinc-900', className)}
       {...props}
     />
   )
 }
 
 export function CardHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('px-6 py-4 border-b border-gray-100', className)} {...props} />
+  return <div className={cn('px-6 py-4 border-b border-white/[0.05]', className)} {...props} />
 }
 
 export function CardContent({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
@@ -20,6 +20,6 @@ export function CardContent({ className, ...props }: HTMLAttributes<HTMLDivEleme
 
 export function CardFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('px-6 py-4 border-t border-gray-100', className)} {...props} />
+    <div className={cn('px-6 py-4 border-t border-white/[0.05]', className)} {...props} />
   )
 }

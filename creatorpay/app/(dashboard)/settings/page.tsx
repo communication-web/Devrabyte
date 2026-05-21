@@ -27,10 +27,10 @@ export default async function SettingsPage() {
   }
 
   const settingCards = [
-    { icon: User, title: 'Profile', description: 'Update your name, business info, and creative category', href: '/settings/profile', color: 'text-violet-600', bg: 'bg-violet-50' },
-    { icon: Building2, title: 'Bank Account', description: 'Manage your withdrawal bank account', href: '/settings/bank', color: 'text-blue-600', bg: 'bg-blue-50' },
-    { icon: Palette, title: 'Invoice Branding', description: 'Customize your invoice look and feel', href: '/settings/invoice', color: 'text-pink-600', bg: 'bg-pink-50' },
-    { icon: Bell, title: 'Notifications', description: 'Control which alerts you receive', href: '/settings/notifications', color: 'text-amber-600', bg: 'bg-amber-50' },
+    { icon: User, title: 'Profile', description: 'Update your name, business info, and creative category', href: '/settings/profile', iconCls: 'text-violet-400', bg: 'bg-violet-500/10' },
+    { icon: Building2, title: 'Bank Account', description: 'Manage your withdrawal bank account', href: '/settings/bank', iconCls: 'text-blue-400', bg: 'bg-blue-500/10' },
+    { icon: Palette, title: 'Invoice Branding', description: 'Customize your invoice look and feel', href: '/settings/invoice', iconCls: 'text-pink-400', bg: 'bg-pink-500/10' },
+    { icon: Bell, title: 'Notifications', description: 'Control which alerts you receive', href: '/settings/notifications', iconCls: 'text-amber-400', bg: 'bg-amber-500/10' },
   ]
 
   const profileRows = [
@@ -43,18 +43,18 @@ export default async function SettingsPage() {
       label: 'Bank account',
       value: profile?.bank_name ? (
         <span className="flex items-center gap-1.5">
-          <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />
+          <CheckCircle className="h-3.5 w-3.5 text-emerald-400" />
           {profile.bank_name}{profile.bank_account_number ? ` ···${profile.bank_account_number.slice(-4)}` : ''}
         </span>
-      ) : <span className="text-gray-400">Not set</span>,
+      ) : <span className="text-zinc-500">Not set</span>,
     },
   ]
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-400 text-sm mt-0.5">Manage your account preferences and configuration</p>
+        <h1 className="text-2xl font-bold text-white">Settings</h1>
+        <p className="text-zinc-500 text-sm mt-0.5">Manage your account preferences and configuration</p>
       </div>
 
       {/* Setting links */}
@@ -62,30 +62,30 @@ export default async function SettingsPage() {
         {settingCards.map((card) => {
           const Icon = card.icon
           return (
-            <Link key={card.href} href={card.href} className="group bg-white rounded-xl border border-gray-100 p-5 flex items-start gap-4 hover:border-violet-100 hover:shadow-sm transition-all">
+            <Link key={card.href} href={card.href} className="group bg-zinc-900 rounded-xl border border-white/[0.07] p-5 flex items-start gap-4 hover:border-violet-500/30 hover:bg-zinc-800/80 transition-all">
               <div className={`p-2.5 rounded-xl ${card.bg} shrink-0`}>
-                <Icon className={`h-5 w-5 ${card.color}`} />
+                <Icon className={`h-5 w-5 ${card.iconCls}`} />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-semibold text-gray-900 group-hover:text-violet-600 transition-colors">{card.title}</h3>
-                <p className="text-xs text-gray-400 mt-0.5 leading-relaxed">{card.description}</p>
+                <h3 className="text-sm font-semibold text-zinc-100 group-hover:text-white transition-colors">{card.title}</h3>
+                <p className="text-xs text-zinc-500 mt-0.5 leading-relaxed">{card.description}</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-violet-500 transition-colors shrink-0 mt-0.5" />
+              <ArrowRight className="h-4 w-4 text-zinc-600 group-hover:text-violet-400 transition-colors shrink-0 mt-0.5" />
             </Link>
           )
         })}
       </div>
 
       {/* Profile summary */}
-      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-50">
-          <h2 className="text-sm font-semibold text-gray-900">Profile Summary</h2>
+      <div className="bg-zinc-900 rounded-xl border border-white/[0.07] overflow-hidden">
+        <div className="px-5 py-4 border-b border-white/[0.05]">
+          <h2 className="text-sm font-semibold text-white">Profile Summary</h2>
         </div>
-        <div className="divide-y divide-gray-50">
+        <div className="divide-y divide-white/[0.05]">
           {profileRows.map(({ label, value }) => (
             <div key={label} className="flex items-center justify-between px-5 py-3.5">
-              <span className="text-sm text-gray-400">{label}</span>
-              <span className="text-sm font-medium text-gray-900">{value}</span>
+              <span className="text-sm text-zinc-400">{label}</span>
+              <span className="text-sm font-medium text-zinc-100">{value}</span>
             </div>
           ))}
         </div>

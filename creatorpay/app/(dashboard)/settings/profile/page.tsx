@@ -59,31 +59,33 @@ export default function ProfileSettingsPage() {
   return (
     <div className="max-w-xl space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/settings" className="p-2 hover:bg-white rounded-lg border border-transparent hover:border-gray-100 transition-all">
-          <ArrowLeft className="h-4 w-4 text-gray-400" />
+        <Link href="/settings" className="p-2 hover:bg-white/[0.06] rounded-lg border border-transparent hover:border-white/[0.07] transition-all">
+          <ArrowLeft className="h-4 w-4 text-zinc-400" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Profile</h1>
-          <p className="text-gray-400 text-sm mt-0.5">Update your personal and business details</p>
+          <h1 className="text-2xl font-bold text-white">Profile</h1>
+          <p className="text-zinc-500 text-sm mt-0.5">Update your personal and business details</p>
         </div>
       </div>
 
       {toast && (
         <div className={`flex items-center gap-2.5 rounded-lg px-4 py-3 text-sm font-medium border ${
-          toast.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200'
+          toast.type === 'success'
+            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+            : 'bg-red-500/10 text-red-400 border-red-500/20'
         }`}>
           {toast.type === 'success' ? <CheckCircle className="h-4 w-4 shrink-0" /> : <XCircle className="h-4 w-4 shrink-0" />}
           {toast.message}
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-50">
-          <h2 className="text-sm font-semibold text-gray-900">Personal Information</h2>
+      <div className="bg-zinc-900 rounded-xl border border-white/[0.07] overflow-hidden">
+        <div className="px-5 py-4 border-b border-white/[0.05]">
+          <h2 className="text-sm font-semibold text-white">Personal Information</h2>
         </div>
         <div className="px-5 py-5 space-y-4">
           {loading ? (
-            [...Array(4)].map((_, i) => <div key={i} className="h-10 bg-gray-100 rounded-lg animate-pulse" />)
+            [...Array(4)].map((_, i) => <div key={i} className="h-10 bg-zinc-800 rounded-lg animate-pulse" />)
           ) : (
             <>
               <Input label="Full name" value={form.full_name} onChange={(e) => setForm((f) => ({ ...f, full_name: e.target.value }))} placeholder="Your full name" />

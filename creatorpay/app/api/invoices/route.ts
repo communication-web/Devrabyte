@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { client_id, new_client, due_date, line_items, action } = await request.json()
+  const { client_id, new_client, due_date, line_items, currency, action } = await request.json()
 
   if (!due_date || !line_items?.length) {
     return Response.json({ error: 'Missing required fields' }, { status: 400 })
@@ -68,6 +68,7 @@ export async function POST(request: NextRequest) {
     platform_fee,
     total,
     due_date,
+    currency: currency || 'NGN',
     status: action === 'send' ? 'sent' : 'draft',
     payment_reference: reference,
   }
@@ -91,6 +92,7 @@ export async function POST(request: NextRequest) {
         const payInit = await paystack.initializeTransaction({
           email: clientData?.email || userData.email,
           amount: toKobo(total),
+          ...(currency && currency !== 'NGN' ? { currency } : {}),
           reference,
           subaccount: userData.paystack_subaccount_code,
           bearer: 'subaccount',

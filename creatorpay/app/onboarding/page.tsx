@@ -78,19 +78,22 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-[#09090f] flex flex-col items-center justify-center p-4">
+      {/* Background glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center shadow-sm shadow-violet-900/50">
             <Wallet className="h-4 w-4 text-white" />
           </div>
-          <span className="text-lg font-bold text-gray-900">CreatorPay</span>
+          <span className="text-lg font-bold text-white font-display">CreatorPay</span>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="bg-zinc-900 rounded-2xl border border-white/[0.07] overflow-hidden">
           {/* Step header */}
-          <div className="px-7 pt-7 pb-6 border-b border-gray-50">
+          <div className="px-7 pt-7 pb-6 border-b border-white/[0.05]">
             {/* Stepper */}
             <div className="flex items-center gap-3 mb-6">
               {steps.map((s, i) => {
@@ -103,21 +106,21 @@ export default function OnboardingPage() {
                       done
                         ? 'bg-violet-600 text-white'
                         : active
-                        ? 'bg-violet-600 text-white ring-4 ring-violet-100'
-                        : 'bg-gray-100 text-gray-400'
+                        ? 'bg-violet-600 text-white ring-4 ring-violet-500/20'
+                        : 'bg-zinc-800 text-zinc-500'
                     }`}>
                       {done ? <Check className="h-3.5 w-3.5" /> : n}
                     </div>
                     {n < steps.length && (
-                      <div className={`h-px w-10 transition-colors ${n < step ? 'bg-violet-600' : 'bg-gray-100'}`} />
+                      <div className={`h-px w-10 transition-colors ${n < step ? 'bg-violet-600' : 'bg-zinc-800'}`} />
                     )}
                   </div>
                 )
               })}
             </div>
 
-            <h1 className="text-xl font-bold text-gray-900">{steps[step - 1].label}</h1>
-            <p className="text-sm text-gray-400 mt-0.5">{steps[step - 1].desc}</p>
+            <h1 className="text-xl font-bold text-white">{steps[step - 1].label}</h1>
+            <p className="text-sm text-zinc-500 mt-0.5">{steps[step - 1].desc}</p>
           </div>
 
           {/* Form */}
@@ -185,7 +188,7 @@ export default function OnboardingPage() {
               )}
 
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-700">
+                <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 text-sm text-red-400">
                   {error}
                 </div>
               )}
@@ -195,7 +198,7 @@ export default function OnboardingPage() {
                   <button
                     type="button"
                     onClick={() => setStep(1)}
-                    className="flex-1 py-3 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+                    className="flex-1 py-3 rounded-lg border border-white/[0.1] bg-zinc-800 text-sm font-medium text-zinc-300 hover:bg-zinc-700 transition-colors"
                   >
                     Back
                   </button>

@@ -88,8 +88,8 @@ export default function ClientsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Clients</h1>
-          <p className="text-gray-400 text-sm mt-0.5">{clients.length} total</p>
+          <h1 className="text-2xl font-bold text-white">Clients</h1>
+          <p className="text-zinc-500 text-sm mt-0.5">{clients.length} total</p>
         </div>
         <Button onClick={openCreate}>
           <Plus className="h-4 w-4" />
@@ -99,11 +99,11 @@ export default function ClientsPage() {
 
       {/* Inline form */}
       {showForm && (
-        <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-50">
-            <h2 className="text-sm font-semibold text-gray-900">{editClient ? 'Edit client' : 'New client'}</h2>
-            <button onClick={() => setShowForm(false)} className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-              <X className="h-4 w-4 text-gray-400" />
+        <div className="bg-zinc-900 rounded-xl border border-white/[0.07] overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.05]">
+            <h2 className="text-sm font-semibold text-white">{editClient ? 'Edit client' : 'New client'}</h2>
+            <button onClick={() => setShowForm(false)} className="p-1.5 hover:bg-white/[0.06] rounded-lg transition-colors">
+              <X className="h-4 w-4 text-zinc-400" />
             </button>
           </div>
           <form onSubmit={handleSubmit} className="px-5 py-5">
@@ -113,10 +113,10 @@ export default function ClientsPage() {
               <Input label="Phone (optional)" placeholder="+234..." value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
               <Input label="Company (optional)" placeholder="Brand name" value={form.company} onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))} />
             </div>
-            {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+            {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
             <div className="flex gap-3 mt-4">
               <Button type="submit" loading={formLoading}>{editClient ? 'Save changes' : 'Create client'}</Button>
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors">
+              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 text-sm font-medium text-zinc-500 hover:text-zinc-300 transition-colors">
                 Cancel
               </button>
             </div>
@@ -125,12 +125,12 @@ export default function ClientsPage() {
       )}
 
       {/* List */}
-      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-gray-50">
+      <div className="bg-zinc-900 rounded-xl border border-white/[0.07] overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-white/[0.05]">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
             <input
-              className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-violet-500 bg-gray-50/50"
+              className="w-full pl-9 pr-4 py-2 text-sm rounded-lg bg-zinc-800/60 border border-white/[0.1] text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-violet-500/50 focus:border-violet-500 transition-colors"
               placeholder="Search by name, email, or company..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -139,27 +139,27 @@ export default function ClientsPage() {
         </div>
 
         {loading ? (
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-white/[0.05]">
             {[...Array(4)].map((_, i) => (
               <div key={i} className="flex items-center gap-4 px-5 py-4">
-                <div className="w-9 h-9 rounded-full bg-gray-100 animate-pulse shrink-0" />
+                <div className="w-9 h-9 rounded-full bg-zinc-800 animate-pulse shrink-0" />
                 <div className="flex-1 space-y-1.5">
-                  <div className="h-3.5 bg-gray-100 rounded w-36 animate-pulse" />
-                  <div className="h-3 bg-gray-50 rounded w-48 animate-pulse" />
+                  <div className="h-3.5 bg-zinc-800 rounded w-36 animate-pulse" />
+                  <div className="h-3 bg-zinc-800/60 rounded w-48 animate-pulse" />
                 </div>
               </div>
             ))}
           </div>
         ) : filtered.length === 0 ? (
           <div className="py-16 text-center">
-            <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Users className="h-6 w-6 text-gray-300" />
+            <div className="w-12 h-12 bg-zinc-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Users className="h-6 w-6 text-zinc-600" />
             </div>
-            <p className="text-sm font-medium text-gray-500 mb-1">
+            <p className="text-sm font-medium text-zinc-500 mb-1">
               {search ? 'No clients match your search' : 'No clients yet'}
             </p>
             {!search && (
-              <button onClick={openCreate} className="text-sm text-violet-600 hover:text-violet-700 font-medium">
+              <button onClick={openCreate} className="text-sm text-violet-400 hover:text-violet-300 font-medium">
                 Add your first client →
               </button>
             )}
@@ -167,27 +167,27 @@ export default function ClientsPage() {
         ) : (
           <div>
             {filtered.map((client) => (
-              <div key={client.id} className="flex items-center gap-4 px-5 py-4 hover:bg-gray-50/70 transition-colors border-b border-gray-50 last:border-0">
-                <div className="w-9 h-9 rounded-full bg-violet-100 flex items-center justify-center text-violet-700 font-bold text-xs shrink-0">
+              <div key={client.id} className="flex items-center gap-4 px-5 py-4 hover:bg-white/[0.04] transition-colors border-b border-white/[0.05] last:border-0">
+                <div className="w-9 h-9 rounded-full bg-violet-600/20 flex items-center justify-center text-violet-400 font-bold text-xs shrink-0">
                   {initials(client.name)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900">{client.name}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-sm font-semibold text-zinc-100">{client.name}</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">
                     {client.email}{client.company ? ` · ${client.company}` : ''}
                   </p>
                 </div>
-                <p className="text-xs text-gray-400 hidden sm:block">Added {formatDate(client.created_at)}</p>
+                <p className="text-xs text-zinc-500 hidden sm:block">Added {formatDate(client.created_at)}</p>
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => openEdit(client)}
-                    className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="p-2 text-zinc-500 hover:text-zinc-200 hover:bg-white/[0.06] rounded-lg transition-colors"
                   >
                     <Pencil className="h-3.5 w-3.5" />
                   </button>
                   <button
                     onClick={() => handleDelete(client.id)}
-                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    className="p-2 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
