@@ -27,10 +27,6 @@ const nav = [
   { label: 'Notifications', href: '/notifications', icon: Bell },
 ]
 
-const bottomNav = [
-  { label: 'Settings', href: '/settings', icon: Settings },
-]
-
 export function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
@@ -42,13 +38,17 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="fixed inset-y-0 left-0 w-64 bg-gray-900 flex flex-col">
-      <div className="px-6 py-5 flex items-center gap-2 border-b border-gray-800">
-        <Wallet className="h-6 w-6 text-violet-400" />
-        <span className="text-white font-bold text-lg">CreatorPay</span>
+    <aside className="fixed inset-y-0 left-0 w-64 bg-gray-950 flex flex-col border-r border-white/[0.04]">
+      {/* Logo */}
+      <div className="px-5 py-5 flex items-center gap-2.5">
+        <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center shrink-0">
+          <Wallet className="h-4 w-4 text-white" />
+        </div>
+        <span className="text-white font-bold text-[15px] tracking-tight">CreatorPay</span>
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      {/* Main nav */}
+      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
         {nav.map(({ label, href, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href + '/')
           return (
@@ -56,43 +56,48 @@ export function Sidebar() {
               key={href}
               href={href}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                'group flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150',
                 active
-                  ? 'bg-violet-600 text-white'
-                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                  ? 'bg-violet-600 text-white shadow-sm'
+                  : 'text-gray-500 hover:bg-white/[0.05] hover:text-gray-200'
               )}
             >
-              <Icon className="h-4 w-4" />
+              <Icon
+                className={cn(
+                  'h-[15px] w-[15px] shrink-0 transition-colors',
+                  active ? 'text-white' : 'text-gray-600 group-hover:text-gray-300'
+                )}
+              />
               {label}
             </Link>
           )
         })}
       </nav>
 
-      <div className="px-3 py-2 border-t border-gray-800 space-y-1">
-        {bottomNav.map(({ label, href, icon: Icon }) => {
-          const active = pathname === href || pathname.startsWith(href + '/')
+      {/* Bottom */}
+      <div className="px-3 pb-4 pt-2 border-t border-white/[0.05] space-y-0.5">
+        {(() => {
+          const active = pathname === '/settings' || pathname.startsWith('/settings/')
           return (
             <Link
-              key={href}
-              href={href}
+              href="/settings"
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                'group flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150',
                 active
                   ? 'bg-violet-600 text-white'
-                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                  : 'text-gray-500 hover:bg-white/[0.05] hover:text-gray-200'
               )}
             >
-              <Icon className="h-4 w-4" />
-              {label}
+              <Settings className={cn('h-[15px] w-[15px] shrink-0 transition-colors', active ? 'text-white' : 'text-gray-600 group-hover:text-gray-300')} />
+              Settings
             </Link>
           )
-        })}
+        })()}
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
+          className="w-full group flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium text-gray-500 hover:bg-white/[0.05] hover:text-gray-200 transition-all duration-150"
         >
-          <LogOut className="h-4 w-4" />
+          <LogOut className="h-[15px] w-[15px] shrink-0 text-gray-600 group-hover:text-gray-300 transition-colors" />
           Sign out
         </button>
       </div>

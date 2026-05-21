@@ -3,10 +3,16 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Wallet } from 'lucide-react'
+import { Wallet, CheckCircle, Zap, Shield } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
+
+const perks = [
+  { icon: Zap, text: 'Same-day payouts to any Nigerian bank' },
+  { icon: CheckCircle, text: 'Professional invoices in under a minute' },
+  { icon: Shield, text: 'Paystack-secured payments, always' },
+]
 
 export default function LoginPage() {
   const router = useRouter()
@@ -36,16 +42,69 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <Wallet className="h-7 w-7 text-violet-600" />
-          <span className="text-2xl font-bold text-gray-900">CreatorPay</span>
+    <div className="min-h-screen flex">
+      {/* Left — brand panel */}
+      <div className="hidden lg:flex lg:w-[46%] bg-gray-950 flex-col justify-between p-12 relative overflow-hidden">
+        {/* Background glow */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-64 h-64 bg-violet-800/15 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Logo */}
+        <div className="flex items-center gap-2.5 relative z-10">
+          <div className="w-9 h-9 bg-violet-600 rounded-xl flex items-center justify-center">
+            <Wallet className="h-5 w-5 text-white" />
+          </div>
+          <span className="text-white font-bold text-xl tracking-tight">CreatorPay</span>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome back</h1>
-          <p className="text-gray-500 text-sm mb-6">Sign in to your account</p>
+        {/* Hero copy */}
+        <div className="relative z-10">
+          <h2 className="text-4xl font-bold text-white leading-snug mb-3">
+            Get paid the<br />same day.
+          </h2>
+          <p className="text-gray-400 text-base leading-relaxed max-w-xs">
+            The invoicing platform built for Nigeria&apos;s creative economy.
+          </p>
+          <div className="mt-8 space-y-3.5">
+            {perks.map(({ icon: Icon, text }) => (
+              <div key={text} className="flex items-center gap-3">
+                <div className="w-7 h-7 rounded-lg bg-violet-600/20 flex items-center justify-center shrink-0">
+                  <Icon className="h-3.5 w-3.5 text-violet-400" />
+                </div>
+                <span className="text-gray-300 text-sm">{text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="flex gap-10 relative z-10">
+          {[
+            { value: '2,400+', label: 'Creators paid' },
+            { value: '₦890M+', label: 'Processed' },
+            { value: '98%', label: 'Success rate' },
+          ].map(({ value, label }) => (
+            <div key={label}>
+              <div className="text-xl font-bold text-white">{value}</div>
+              <div className="text-xs text-gray-500 mt-0.5">{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right — form panel */}
+      <div className="flex-1 flex items-center justify-center p-6 bg-white">
+        <div className="w-full max-w-sm">
+          {/* Mobile logo */}
+          <div className="flex items-center gap-2 mb-8 lg:hidden">
+            <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center">
+              <Wallet className="h-4 w-4 text-white" />
+            </div>
+            <span className="font-bold text-gray-900 text-lg">CreatorPay</span>
+          </div>
+
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">Welcome back</h1>
+          <p className="text-gray-400 text-sm mb-8">Sign in to your account</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
@@ -76,10 +135,10 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-gray-500">
+          <p className="mt-6 text-center text-sm text-gray-400">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-violet-600 font-medium hover:underline">
-              Sign up for free
+            <Link href="/signup" className="text-violet-600 font-medium hover:text-violet-700">
+              Sign up free
             </Link>
           </p>
         </div>
