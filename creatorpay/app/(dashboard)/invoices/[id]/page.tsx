@@ -7,6 +7,7 @@ import { formatCurrency, formatDate } from '@/lib/utils'
 import { Invoice, LineItem } from '@/types'
 import { SendInvoiceButton } from './send-invoice-button'
 import { RequestAdvanceButton } from './request-advance-button'
+import { ShareInvoiceButton } from './share-invoice-button'
 
 export default async function InvoiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -42,6 +43,17 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
         </div>
         <div className="flex items-center gap-2">
           {inv.status === 'draft' && <SendInvoiceButton invoiceId={inv.id} />}
+          {inv.paystack_payment_link && (
+            <ShareInvoiceButton
+              invoiceId={inv.id}
+              invoiceNumber={inv.invoice_number}
+              clientName={inv.cp_clients?.name || 'Client'}
+              clientPhone={inv.cp_clients?.phone}
+              total={inv.total}
+              currency={inv.currency || 'NGN'}
+              paymentLink={inv.paystack_payment_link}
+            />
+          )}
           {inv.status === 'sent' && !inv.advance_requested && <RequestAdvanceButton invoice={inv} />}
           {inv.advance_requested && (
             <div className="flex items-center gap-1.5 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-2 rounded-lg font-medium">
