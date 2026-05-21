@@ -1,13 +1,15 @@
+import React from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, ExternalLink, Copy, Zap, Mail, Phone, Building2 } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Copy, Zap, Mail, Phone, Building2, Shield, Clock, CheckCircle2, AlertTriangle, Truck } from 'lucide-react'
 import { Badge, invoiceStatusBadge } from '@/components/ui/badge'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { Invoice, LineItem } from '@/types'
 import { SendInvoiceButton } from './send-invoice-button'
 import { RequestAdvanceButton } from './request-advance-button'
 import { ShareInvoiceButton } from './share-invoice-button'
+import { DeliverButton } from './deliver-button'
 
 export default async function InvoiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -24,8 +26,33 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
 
   if (!invoice) notFound()
 
-  const inv = invoice as Invoice & { cp_clients: { name: string; email: string; company: string | null; phone: string | null } | null; currency?: string }
+  const inv = invoice as Invoice & {
+    cp_clients: { name: string; email: string; company: string | null; phone: string | null } | null
+    currency?: string
+    escrow_enabled?: boolean
+    escrow_status?: string
+    advance_percentage?: number
+    advance_payment_link?: string | null
+    balance_payment_link?: string | null
+    delivered_at?: string | null
+    confirmed_at?: string | null
+  }
   const currencySymbol = inv.currency === 'USD' ? '$' : '₦'
+
+  const escrowStatusConfig: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
+    none: { label: 'Not started', color: 'text-zinc-400 bg-zinc-800 border-zinc-700', icon: <Shield className="h-3 w-3" /> },
+    awaiting_advance: { label: 'Awaiting advance payment', color: 'text-amber-400 bg-amber-500/10 border-amber-500/20', icon: <Clock className="h-3 w-3" /> },
+    advance_paid: { label: 'Advance paid', color: 'text-violet-400 bg-violet-500/10 border-violet-500/20', icon: <CheckCircle2 className="h-3 w-3" /> },
+    delivered: { label: 'Delivered — awaiting confirmation', color: 'text-blue-400 bg-blue-500/10 border-blue-500/20', icon: <Truck className="h-3 w-3" /> },
+    confirmed: { label: 'Confirmed — balance due', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20', icon: <CheckCircle2 className="h-3 w-3" /> },
+    completed: { label: 'Completed — fully paid', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20', icon: <CheckCircle2 className="h-3 w-3" /> },
+    disputed: { label: 'Disputed', color: 'text-red-400 bg-red-500/10 border-red-500/20', icon: <AlertTriangle className="h-3 w-3" /> },
+  }
+
+  const escrowStatus = inv.escrow_status || 'none'
+  const escrowCfg = escrowStatusConfig[escrowStatus] ?? escrowStatusConfig['none']
+  const advancePct = inv.advance_percentage ?? 70
+  const balancePct = 100 - advancePct
 
   return (
     <div className="max-w-3xl space-y-5">
@@ -61,6 +88,9 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
               Advance requested
             </div>
           )}
+          {inv.escrow_enabled && escrowStatus === 'advance_paid' && (
+            <DeliverButton invoiceId={inv.id} />
+          )}
         </div>
       </div>
 
@@ -87,6 +117,77 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
             >
               <ExternalLink className="h-3.5 w-3.5" />
               Open
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Escrow status banner */}
+      {inv.escrow_enabled && (
+        <div className="bg-zinc-900 border border-white/[0.07] rounded-xl px-5 py-4">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center shrink-0">
+                <Shield className="h-3.5 w-3.5 text-violet-400" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-white">Protected Payment</p>
+                <p className="text-xs text-zinc-500 mt-0.5">
+                  {advancePct}% advance · {balancePct}% on delivery confirmation
+                </p>
+              </div>
+            </div>
+            <div className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border ${escrowCfg.color}`}>
+              {escrowCfg.icon}
+              {escrowCfg.label}
+            </div>
+          </div>
+
+          {/* Payment links for escrow stages */}
+          {(inv.advance_payment_link || inv.balance_payment_link) && (
+            <div className="mt-4 pt-4 border-t border-white/[0.05] grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {inv.advance_payment_link && (
+                <div>
+                  <p className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-1.5">Advance link ({advancePct}%)</p>
+                  <a
+                    href={inv.advance_payment_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-violet-400 hover:text-violet-300 flex items-center gap-1 truncate"
+                  >
+                    <ExternalLink className="h-3 w-3 shrink-0" />
+                    <span className="truncate">{inv.advance_payment_link}</span>
+                  </a>
+                </div>
+              )}
+              {inv.balance_payment_link && (
+                <div>
+                  <p className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-1.5">Balance link ({balancePct}%)</p>
+                  <a
+                    href={inv.balance_payment_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1 truncate"
+                  >
+                    <ExternalLink className="h-3 w-3 shrink-0" />
+                    <span className="truncate">{inv.balance_payment_link}</span>
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Contract download */}
+          <div className="mt-3 pt-3 border-t border-white/[0.05] flex items-center justify-between">
+            <p className="text-xs text-zinc-500">Auto-generated service contract</p>
+            <a
+              href={`/api/invoices/${inv.id}/contract`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors"
+            >
+              <ExternalLink className="h-3 w-3" />
+              Download contract PDF
             </a>
           </div>
         </div>

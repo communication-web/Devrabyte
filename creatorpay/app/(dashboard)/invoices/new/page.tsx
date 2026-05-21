@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Plus, Trash2, ArrowLeft } from 'lucide-react'
+import { Plus, Trash2, ArrowLeft, Shield, ChevronDown } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
@@ -28,6 +28,8 @@ export default function NewInvoicePage() {
   const [lineItems, setLineItems] = useState<LineItem[]>([
     { description: '', quantity: 1, unit_price: 0 },
   ])
+  const [escrowEnabled, setEscrowEnabled] = useState(false)
+  const [advancePercentage, setAdvancePercentage] = useState(70)
 
   useEffect(() => {
     fetch('/api/clients').then((r) => r.json()).then((d) => setClients(d.clients || []))
@@ -72,6 +74,8 @@ export default function NewInvoicePage() {
         line_items: lineItems,
         currency,
         action,
+        escrow_enabled: escrowEnabled,
+        advance_percentage: escrowEnabled ? advancePercentage : 70,
       }
 
       const res = await fetch('/api/invoices', {
@@ -256,6 +260,73 @@ export default function NewInvoicePage() {
             required
           />
         </div>
+      </div>
+
+      {/* Protected Payment (Escrow) */}
+      <div className="bg-zinc-900 rounded-xl border border-white/[0.07] overflow-hidden">
+        <div className="px-5 py-4 border-b border-white/[0.05]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <Shield className="h-4 w-4 text-violet-400" />
+              <h2 className="text-sm font-semibold text-white">Protected Payment</h2>
+              <span className="text-[10px] font-semibold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider">Beta</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setEscrowEnabled((v) => !v)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${escrowEnabled ? 'bg-violet-600' : 'bg-zinc-700'}`}
+              role="switch"
+              aria-checked={escrowEnabled}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${escrowEnabled ? 'translate-x-6' : 'translate-x-1'}`}
+              />
+            </button>
+          </div>
+          <p className="text-xs text-zinc-500 mt-1.5 ml-6">Secure payments with auto-contract. Client pays upfront; balance released on delivery confirmation.</p>
+        </div>
+
+        {escrowEnabled && (
+          <div className="px-5 py-5 space-y-4">
+            <div>
+              <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider block mb-3">Advance percentage</label>
+              <div className="flex items-center gap-2">
+                {([50, 60, 70] as const).map((pct) => (
+                  <button
+                    key={pct}
+                    type="button"
+                    onClick={() => setAdvancePercentage(pct)}
+                    className={`flex-1 py-2.5 rounded-lg text-sm font-semibold border transition-all ${
+                      advancePercentage === pct
+                        ? 'bg-violet-600 border-violet-500 text-white shadow-sm shadow-violet-900/40'
+                        : 'bg-zinc-800 border-white/[0.08] text-zinc-400 hover:text-zinc-200 hover:border-white/[0.15]'
+                    }`}
+                  >
+                    {pct}%
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-zinc-800/60 border border-white/[0.05] rounded-lg px-4 py-3.5 space-y-1.5">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-zinc-400">Client pays upfront</span>
+                <span className="font-semibold text-white">
+                  {advancePercentage}% — ₦{((total * advancePercentage) / 100).toLocaleString('en-NG', { maximumFractionDigits: 0 })}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-zinc-400">Released on delivery confirmation</span>
+                <span className="font-semibold text-emerald-400">
+                  {100 - advancePercentage}% — ₦{((total * (100 - advancePercentage)) / 100).toLocaleString('en-NG', { maximumFractionDigits: 0 })}
+                </span>
+              </div>
+              <p className="text-[11px] text-zinc-600 pt-1 border-t border-white/[0.05] mt-1">
+                Includes a legally binding auto-contract governed by Nigerian law. The advance is held securely until the client confirms delivery.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {error && (

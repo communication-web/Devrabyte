@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { client_id, new_client, due_date, line_items, currency, action } = await request.json()
+  const { client_id, new_client, due_date, line_items, currency, action, escrow_enabled, advance_percentage } = await request.json()
 
   if (!due_date || !line_items?.length) {
     return Response.json({ error: 'Missing required fields' }, { status: 400 })
@@ -60,6 +60,9 @@ export async function POST(request: NextRequest) {
   const invoice_number = await getNextInvoiceNumber(supabase, user.id)
   const reference = generateReference()
 
+  const isEscrow = !!escrow_enabled
+  const advancePct = isEscrow ? (advance_percentage || 70) : 100
+
   const invoiceData: Record<string, unknown> = {
     creator_id: user.id,
     client_id: resolvedClientId || null,
@@ -72,13 +75,18 @@ export async function POST(request: NextRequest) {
     currency: currency || 'NGN',
     status: action === 'send' ? 'sent' : 'draft',
     payment_reference: reference,
+    escrow_enabled: isEscrow,
+    advance_percentage: advancePct,
+    escrow_status: isEscrow ? 'awaiting_advance' : 'none',
   }
 
   // If sending, create Paystack payment link
+  // Platform-holds model: NO subaccount split — platform receives all funds
+  // and transfers to creators manually on withdrawal request.
   if (action === 'send' && resolvedClientId) {
     const { data: userData } = await supabase
       .from('cp_users')
-      .select('paystack_subaccount_code, email')
+      .select('email')
       .eq('id', user.id)
       .single()
 
@@ -88,22 +96,37 @@ export async function POST(request: NextRequest) {
       .eq('id', resolvedClientId)
       .single()
 
-    if (userData?.paystack_subaccount_code) {
-      try {
+    const clientEmail = clientData?.email || userData?.email || ''
+
+    try {
+      if (isEscrow) {
+        // Advance payment link (X% of total)
+        const advanceAmount = Math.round(total * advancePct / 100)
+        const advanceRef = generateReference()
         const payInit = await paystack.initializeTransaction({
-          email: clientData?.email || userData.email,
+          email: clientEmail,
+          amount: toKobo(advanceAmount),
+          ...(currency && currency !== 'NGN' ? { currency } : {}),
+          reference: advanceRef,
+          callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/paystack/callback`,
+          metadata: { invoice_number, creator_id: user.id, payment_type: 'advance' },
+        })
+        invoiceData.advance_payment_reference = advanceRef
+        invoiceData.advance_payment_link = payInit.authorization_url
+        invoiceData.paystack_payment_link = payInit.authorization_url
+      } else {
+        const payInit = await paystack.initializeTransaction({
+          email: clientEmail,
           amount: toKobo(total),
           ...(currency && currency !== 'NGN' ? { currency } : {}),
           reference,
-          subaccount: userData.paystack_subaccount_code,
-          bearer: 'subaccount',
           callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/paystack/callback`,
-          metadata: { invoice_number, creator_id: user.id },
+          metadata: { invoice_number, creator_id: user.id, payment_type: 'full' },
         })
         invoiceData.paystack_payment_link = payInit.authorization_url
-      } catch (err) {
-        console.error('Paystack init failed:', err)
       }
+    } catch (err) {
+      console.error('Paystack init failed:', err)
     }
   }
 
@@ -116,18 +139,10 @@ export async function POST(request: NextRequest) {
   if (error) return Response.json({ error: error.message }, { status: 500 })
 
   // Send invoice email to client
-  if (action === 'send' && resolvedClientId && invoiceData.paystack_payment_link) {
-    const { data: clientData } = await supabase
-      .from('cp_clients')
-      .select('email, name')
-      .eq('id', resolvedClientId)
-      .single()
-
-    const { data: userData } = await supabase
-      .from('cp_users')
-      .select('full_name, business_name, invoice_default_notes')
-      .eq('id', user.id)
-      .single()
+  const paymentLink = invoiceData.paystack_payment_link as string | undefined
+  if (action === 'send' && resolvedClientId && paymentLink) {
+    const { data: clientData } = await supabase.from('cp_clients').select('email, name').eq('id', resolvedClientId).single()
+    const { data: userData } = await supabase.from('cp_users').select('full_name, business_name, invoice_default_notes').eq('id', user.id).single()
 
     if (clientData?.email) {
       sendInvoiceEmail({
@@ -135,12 +150,14 @@ export async function POST(request: NextRequest) {
         clientName: clientData.name,
         creatorName: userData?.business_name || userData?.full_name || 'Your service provider',
         invoiceNumber: invoice_number,
-        total: total,
+        total: isEscrow ? Math.round(total * advancePct / 100) : total,
         dueDate: formatDate(due_date),
-        paymentLink: invoiceData.paystack_payment_link as string,
+        paymentLink,
         lineItems: items,
         currency: currency || 'NGN',
-        notes: userData?.invoice_default_notes || undefined,
+        notes: isEscrow
+          ? `This is a Protected Payment invoice. You are paying ${advancePct}% advance (${currency === 'USD' ? '$' : '₦'}${Math.round(total * advancePct / 100).toLocaleString()}). The remaining ${100 - advancePct}% is due after you confirm delivery.${userData?.invoice_default_notes ? '\n\n' + userData.invoice_default_notes : ''}`
+          : (userData?.invoice_default_notes || undefined),
       }).catch((err) => console.error('Invoice email failed:', err))
     }
   }
