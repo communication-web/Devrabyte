@@ -10,16 +10,25 @@ import {
   Zap,
   LogOut,
   Wallet,
+  BarChart2,
+  Bell,
+  Settings,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 
 const nav = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { label: 'Clients', href: '/clients', icon: Users },
   { label: 'Invoices', href: '/invoices', icon: FileText },
-  { label: 'Withdrawals', href: '/withdrawals', icon: ArrowDownToLine },
+  { label: 'Clients', href: '/clients', icon: Users },
   { label: 'Advance', href: '/advance', icon: Zap },
+  { label: 'Withdrawals', href: '/withdrawals', icon: ArrowDownToLine },
+  { label: 'Analytics', href: '/analytics', icon: BarChart2 },
+  { label: 'Notifications', href: '/notifications', icon: Bell },
+]
+
+const bottomNav = [
+  { label: 'Settings', href: '/settings', icon: Settings },
 ]
 
 export function Sidebar() {
@@ -60,7 +69,25 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="px-3 py-4 border-t border-gray-800">
+      <div className="px-3 py-2 border-t border-gray-800 space-y-1">
+        {bottomNav.map(({ label, href, icon: Icon }) => {
+          const active = pathname === href || pathname.startsWith(href + '/')
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={cn(
+                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                active
+                  ? 'bg-violet-600 text-white'
+                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+              )}
+            >
+              <Icon className="h-4 w-4" />
+              {label}
+            </Link>
+          )
+        })}
         <button
           onClick={handleSignOut}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"

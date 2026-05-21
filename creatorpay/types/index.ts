@@ -100,3 +100,34 @@ export interface DashboardStats {
   pending_amount: number
   paid_out: number
 }
+
+export type NotificationType =
+  | 'invoice_paid'
+  | 'invoice_overdue'
+  | 'advance_approved'
+  | 'advance_rejected'
+  | 'withdrawal_success'
+  | 'withdrawal_failed'
+  | 'system'
+
+export interface Notification {
+  id: string
+  creator_id: string
+  type: NotificationType
+  title: string
+  body: string
+  read: boolean
+  metadata: Record<string, unknown>
+  created_at: string
+}
+
+export interface AnalyticsStats {
+  total_earned: number
+  earned_this_month: number
+  earned_last_month: number
+  invoice_count: number
+  paid_invoice_count: number
+  avg_invoice_value: number
+  top_clients: { name: string; total: number }[]
+  monthly_revenue: { month: string; amount: number }[]
+}
