@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST(request: NextRequest) {
   const { full_name, email, password } = await request.json()
@@ -23,7 +24,9 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Failed to create user' }, { status: 500 })
   }
 
-  const { error: insertError } = await supabase.from('cp_users').insert({
+  // Use admin client to bypass RLS — user has no session cookie yet at signup time
+  const admin = createAdminClient()
+  const { error: insertError } = await admin.from('cp_users').insert({
     id: userId,
     email,
     full_name,
