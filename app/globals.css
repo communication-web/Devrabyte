@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 15% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 15% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 15% 11%;
+    --primary: 222 47% 11%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 222 15% 20%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 14% 45%;
+    --accent: 210 20% 94%;
+    --accent-foreground: 222 15% 20%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 90%;
+    --input: 220 13% 90%;
+    --ring: 222 47% 11%;
+    --radius: 0.625rem;
+
+    /* Brand accent */
+    --accent-blue: 221 83% 55%;
+    --accent-blue-fg: 0 0% 100%;
+  }
+
+  .dark {
+    --background: 222 20% 6%;
+    --foreground: 210 20% 98%;
+    --card: 222 20% 8%;
+    --card-foreground: 210 20% 98%;
+    --popover: 222 20% 8%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 210 20% 98%;
+    --primary-foreground: 222 20% 8%;
+    --secondary: 222 15% 14%;
+    --secondary-foreground: 210 20% 95%;
+    --muted: 222 15% 14%;
+    --muted-foreground: 215 14% 60%;
+    --accent: 222 15% 16%;
+    --accent-foreground: 210 20% 95%;
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 15% 18%;
+    --input: 222 15% 18%;
+    --ring: 210 20% 80%;
+
+    --accent-blue: 217 91% 60%;
+    --accent-blue-fg: 0 0% 100%;
+  }
+
+  * { border-color: hsl(var(--border)); }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "ss01", "cv11";
+  }
+}
+
+@layer utilities {
+  .accent-blue { color: hsl(var(--accent-blue)); }
+  .bg-accent-blue { background: hsl(var(--accent-blue)); color: hsl(var(--accent-blue-fg)); }
+  .border-accent-blue { border-color: hsl(var(--accent-blue)); }
+  .ring-accent-blue { --tw-ring-color: hsl(var(--accent-blue)); }
+
+  /* Sentence-cased forever — but grid-cell numeric alignment */
+  .tabular { font-variant-numeric: tabular-nums; }
+}

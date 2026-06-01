@@ -1,4 +1,12 @@
-node_modules/
-.env.local
+node_modules
+.next
+out
 .env
+.env.local
+.env.*.local
 *.log
+.DS_Store
+dist
+coverage
+.vercel
+prisma/dev.db*

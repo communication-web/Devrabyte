@@ -1,0 +1,9 @@
+{
+  "buildCommand": "pnpm vercel-build",
+  "crons": [
+    { "path": "/api/cron/daily-summary", "schedule": "*/15 * * * *" },
+    { "path": "/api/cron/weekly-summary", "schedule": "0 8 * * *" },
+    { "path": "/api/cron/bottlenecks", "schedule": "0 */6 * * *" },
+    { "path": "/api/cron/reminders", "schedule": "*/5 * * * *" }
+  ]
+}
