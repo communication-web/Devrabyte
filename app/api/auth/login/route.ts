@@ -44,5 +44,9 @@ export async function POST(req: NextRequest) {
   });
 
   const redirectTo = user.memberships.length === 0 ? '/onboarding' : '/dashboard';
-  return ok({ userId: user.id, redirectTo });
+
+  // Mobile clients send X-Client: mobile and need the token in the response body
+  // (httpOnly cookies are inaccessible from React Native)
+  const isMobile = req.headers.get('x-client') === 'mobile';
+  return ok({ userId: user.id, redirectTo, token: isMobile ? token : undefined });
 }

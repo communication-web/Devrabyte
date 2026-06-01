@@ -33,6 +33,7 @@ async function apiFetch<T>(path: string, opts: FetchOptions = {}): Promise<{ ok:
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
+    'X-Client': 'mobile',
   };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
@@ -56,10 +57,13 @@ async function apiFetch<T>(path: string, opts: FetchOptions = {}): Promise<{ ok:
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 export async function login(email: string, password: string) {
-  const res = await apiFetch<{ userId: string; redirectTo: string }>('/api/auth/login', {
+  const res = await apiFetch<{ userId: string; redirectTo: string; token?: string }>('/api/auth/login', {
     method: 'POST',
     body: { email, password },
   });
+  if (res.ok && res.data.token) {
+    await saveToken(res.data.token);
+  }
   return res;
 }
 

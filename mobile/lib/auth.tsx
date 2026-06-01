@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import * as SecureStore from 'expo-secure-store';
-import { getSession, login as apiLogin, logout as apiLogout, saveToken } from './api';
+import { getSession, login as apiLogin, logout as apiLogout } from './api';
 
 type User = {
   id: string;
@@ -54,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function login(email: string, password: string) {
     const res = await apiLogin(email, password);
     if (!res.ok) return { ok: false, error: res.error };
-    // The web API sets a cookie; for mobile we mirror the session via a re-fetch
+    // Token is saved inside apiLogin; now load the user from /api/auth/session with Bearer auth
     await refresh();
     return { ok: true };
   }
