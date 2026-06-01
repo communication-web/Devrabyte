@@ -37,7 +37,7 @@
         "RECEIVE_BOOT_COMPLETED",
         "VIBRATE"
       ],
-      "googleServicesFile": "./google-services.json"
+
     },
     "web": {
       "bundler": "metro",

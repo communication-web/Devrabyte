@@ -10,3 +10,5 @@ dist
 coverage
 .vercel
 prisma/dev.db*
+mobile/.expo/
+mobile/dist/
