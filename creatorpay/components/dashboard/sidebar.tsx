@@ -13,6 +13,7 @@ import {
   BarChart2,
   Bell,
   Settings,
+  Target,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
@@ -25,6 +26,7 @@ const nav = [
   { label: 'Withdrawals', href: '/withdrawals', icon: ArrowDownToLine },
   { label: 'Analytics', href: '/analytics', icon: BarChart2 },
   { label: 'Notifications', href: '/notifications', icon: Bell },
+  { label: 'Leads', href: '/leads', icon: Target },
 ]
 
 export function Sidebar() {
