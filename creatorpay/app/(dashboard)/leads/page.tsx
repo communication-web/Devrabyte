@@ -5,8 +5,9 @@ import {
   Target, Plus, Search, X, Filter, ChevronDown,
   Building2, Mail, Phone, Globe, Instagram,
   Flame, Thermometer, Sprout, ExternalLink, Trash2,
-  CheckCircle2, Calendar, PhoneCall, TrendingUp,
+  CheckCircle2, Calendar, PhoneCall, TrendingUp, Radio,
 } from 'lucide-react'
+import Link from 'next/link'
 import { Lead, LeadIndustry, LeadLocation, LeadSource, LeadStatus, LeadStats } from '@/types/leads'
 import { cn } from '@/lib/utils'
 
@@ -287,13 +288,22 @@ export default function LeadsPage() {
             Sales CRM <span className="text-zinc-500 font-normal">— prospect intelligence</span>
           </h1>
         </div>
-        <button
-          onClick={() => setShowForm((v) => !v)}
-          className="inline-flex items-center gap-1.5 bg-violet-600 text-white px-3.5 py-2 rounded-lg text-sm font-semibold hover:bg-violet-500 active:scale-95 transition-all shadow-sm shadow-violet-900/40"
-        >
-          <Plus className="h-3.5 w-3.5" />
-          Add Lead
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/leads/scraper"
+            className="inline-flex items-center gap-1.5 bg-zinc-800 text-zinc-300 px-3.5 py-2 rounded-lg text-sm font-semibold hover:bg-zinc-700 active:scale-95 transition-all border border-white/[0.07]"
+          >
+            <Radio className="h-3.5 w-3.5" />
+            Scraper
+          </Link>
+          <button
+            onClick={() => setShowForm((v) => !v)}
+            className="inline-flex items-center gap-1.5 bg-violet-600 text-white px-3.5 py-2 rounded-lg text-sm font-semibold hover:bg-violet-500 active:scale-95 transition-all shadow-sm shadow-violet-900/40"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            Add Lead
+          </button>
+        </div>
       </div>
 
       {/* Stats band */}

@@ -6,5 +6,8 @@
 [build.environment]
   NODE_VERSION = "20"
 
+[functions]
+  directory = "creatorpay/netlify/functions"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
