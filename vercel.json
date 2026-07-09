@@ -1,0 +1,12 @@
+{
+  "buildCommand": "cd creatorpay && npm install && npm run build",
+  "outputDirectory": "creatorpay/.next",
+  "installCommand": "cd creatorpay && npm install",
+  "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/daily-scrape",
+      "schedule": "0 5 * * 1-5"
+    }
+  ]
+}
