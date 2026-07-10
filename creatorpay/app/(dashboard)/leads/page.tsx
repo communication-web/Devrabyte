@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import {
   Target, Plus, Search, X, Filter, ChevronDown,
-  Building2, Mail, Phone, Globe, Instagram,
+  Building2, Mail, Phone, Globe, AtSign,
   Flame, Thermometer, Sprout, ExternalLink, Trash2,
   CheckCircle2, Calendar, PhoneCall, TrendingUp, Radio,
 } from 'lucide-react'
@@ -531,7 +531,7 @@ function LeadRow({
           )}
           {lead.instagram_handle && (
             <span className="flex items-center gap-1.5 text-[10px] text-zinc-600">
-              <Instagram className="h-3 w-3" /> {lead.instagram_handle}
+              <AtSign className="h-3 w-3" /> {lead.instagram_handle}
               {lead.followers_count > 0 && ` · ${lead.followers_count.toLocaleString()}`}
             </span>
           )}

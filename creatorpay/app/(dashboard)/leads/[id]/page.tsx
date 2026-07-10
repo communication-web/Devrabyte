@@ -3,7 +3,7 @@
 import { useState, useEffect, use } from 'react'
 import { useRouter } from 'next/navigation'
 import {
-  ArrowLeft, Building2, Mail, Phone, Globe, Instagram,
+  ArrowLeft, Building2, Mail, Phone, Globe, AtSign,
   Flame, Thermometer, Sprout, Edit2, Save, X, Trash2,
   MapPin, Tag, Radio, Calendar, CheckCircle2, PhoneCall,
 } from 'lucide-react'
@@ -235,7 +235,7 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
               <div>
                 <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-[0.1em] mb-1">Instagram</p>
                 <div className="flex items-center gap-1.5 text-sm text-zinc-200">
-                  <Instagram className="h-3.5 w-3.5 text-zinc-500" />
+                  <AtSign className="h-3.5 w-3.5 text-zinc-500" />
                   {lead.instagram_handle}
                   {lead.followers_count > 0 && (
                     <span className="text-[10px] text-zinc-500">· {lead.followers_count.toLocaleString()} followers</span>
