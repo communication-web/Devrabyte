@@ -2,13 +2,15 @@ import { leadsDb } from '@/lib/supabase/leads'
 import { isDuplicate, isValidEmailFormat, normalizePhone } from './validate'
 import { scrapeGoogleMaps } from './google-maps'
 import { scrapeInstagram } from './instagram'
+import { scrapeLeadsDb } from './leads-db'
 import type { LeadInsert, PipelineResult, ScraperResult } from './types'
 
-type Source = 'google_maps' | 'instagram'
+export type Source = 'google_maps' | 'instagram' | 'leads_db'
 
 const SCRAPERS: Record<Source, () => Promise<ScraperResult>> = {
   google_maps: scrapeGoogleMaps,
   instagram:   scrapeInstagram,
+  leads_db:    scrapeLeadsDb,
 }
 
 // ─── Create / finish run records ─────────────────────────────────────────────

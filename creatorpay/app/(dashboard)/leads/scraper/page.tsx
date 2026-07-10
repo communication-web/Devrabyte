@@ -48,7 +48,7 @@ function StatusIcon({ status }: { status: ScrapeRun['status'] }) {
 const SOURCE_LABELS: Record<string, string> = {
   google_maps: 'Google Maps',
   instagram:   'Instagram',
-  linkedin:    'LinkedIn',
+  leads_db:    'leads-db (NRDs + Enrichment)',
   directory:   'Directory',
   manual:      'Manual',
 }
@@ -58,7 +58,7 @@ export default function ScraperPage() {
   const [loading, setLoading]   = useState(true)
   const [triggering, setTriggering] = useState(false)
   const [triggerResult, setTriggerResult] = useState<string | null>(null)
-  const [sources, setSources]   = useState({ google_maps: true, instagram: true })
+  const [sources, setSources]   = useState({ google_maps: true, instagram: true, leads_db: true })
 
   const fetchRuns = useCallback(async () => {
     const res = await fetch('/api/scrape/runs')
@@ -283,7 +283,12 @@ export default function ScraperPage() {
             { key: 'SCRAPE_SECRET',          desc: 'Shared secret to authenticate trigger endpoint calls', required: true },
             { key: 'NEXT_PUBLIC_APP_URL',    desc: 'Your deployed app URL (for Netlify cron to call back)', required: true },
             { key: 'FREEME_SUPABASE_URL',    desc: 'Override Supabase URL for leads DB (default: bundled)', required: false },
-            { key: 'FREEME_SUPABASE_ANON_KEY', desc: 'Override anon key for leads DB (default: bundled)', required: false },
+            { key: 'FREEME_SUPABASE_ANON_KEY',                    desc: 'Override anon key for leads DB (default: bundled)', required: false },
+            { key: 'LEADS_DB_URL',                                desc: 'Base URL of your running leads-db Flask server (e.g. https://leads-db.railway.app)', required: false },
+            { key: 'LEADS_DB_API_KEY',                            desc: 'Optional bearer token if you add auth to leads-db', required: false },
+            { key: 'ABSTRACT_API_COMPANY_ENRICHMENT_API_KEY',     desc: 'Abstract API key for company enrichment (used by leads-db source)', required: false },
+            { key: 'ABSTRACT_API_COMPANY_ENRICHMENT_API_URL',     desc: 'Abstract API company enrichment endpoint (default: bundled)', required: false },
+            { key: 'ABSTRACT_API_SCRAPE_API_KEY',                 desc: 'Abstract API key for web scraping', required: false },
           ].map(({ key, desc, required }) => (
             <div key={key} className="flex items-start gap-3 px-5 py-3">
               <span className={cn('text-[9px] font-bold uppercase mt-0.5', required ? 'text-red-400' : 'text-zinc-600')}>

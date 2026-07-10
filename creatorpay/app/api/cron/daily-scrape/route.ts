@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const result = await runPipeline(['google_maps', 'instagram'])
+    const result = await runPipeline(['google_maps', 'instagram', 'leads_db'])
     console.log('[cron] daily-scrape complete', result)
     return NextResponse.json(result)
   } catch (err) {
