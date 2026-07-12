@@ -24,4 +24,36 @@ export type Snowflake = {
 export type Settings = {
   strategy: Strategy;
   extraMonthly: number;
+  notificationsEnabled: boolean;
+  /** Hour of day (0-23, local time) for the daily reminder. */
+  reminderHour: number;
+};
+
+export type Streak = {
+  currentStreak: number;
+  longestStreak: number;
+  /** Local YYYY-MM-DD date of the last logged activity, or null if none yet. */
+  lastActiveDateISO: string | null;
+};
+
+export type BadgeId =
+  | 'streak-3'
+  | 'streak-7'
+  | 'streak-30'
+  | 'progress-25'
+  | 'progress-50'
+  | 'progress-75'
+  | 'debt-free'
+  | 'first-snowflake'
+  | 'snowflake-5';
+
+export type Badge = {
+  id: BadgeId;
+  title: string;
+  description: string;
+};
+
+export type AnalyticsEvent = {
+  name: string;
+  dateISO: string;
 };
