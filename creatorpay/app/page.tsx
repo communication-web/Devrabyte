@@ -157,24 +157,24 @@ export default function HomePage() {
       <section className="hero-section max-w-6xl mx-auto px-6 pt-20 pb-16 text-center overflow-hidden">
         <div className="hero-badge inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 rounded-full px-4 py-1.5 text-violet-400 text-sm font-medium mb-8">
           <Zap className="h-3.5 w-3.5" />
-          Built for African creatives
+          Devrabyte · Business Operations AI Agent
         </div>
         <h1 className="hero-title font-display text-5xl md:text-7xl font-black text-white leading-tight mb-6 tracking-tight">
-          Invoice. Get paid.
+          Keep work moving.
           <br />
-          <span className="text-violet-400">Same day.</span>
+          <span className="text-violet-400">From request to delivery.</span>
         </h1>
         <p className="hero-desc text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-          CreatorPay helps designers, photographers, and content creators send
-          professional invoices and access earnings immediately — no more waiting
-          30–60 days.
+          Devrabyte is building an AI agent to turn incoming requests into assigned
+          work, track deadlines, and flag issues for your team. Each business can
+          define the stages, owners, and approvals that fit how it works.
         </p>
         <div className="hero-buttons flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/signup"
             className="inline-flex items-center justify-center gap-2 bg-violet-600 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-violet-500 transition-colors duration-300 text-base shadow-sm shadow-violet-900/40"
           >
-            Start for free <ArrowRight className="h-4 w-4" />
+            Try CreatorPay <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
             href="/login"
@@ -183,7 +183,7 @@ export default function HomePage() {
             Sign in
           </Link>
         </div>
-        <p className="hero-note text-sm text-zinc-600 mt-4">No credit card required · Free to get started</p>
+        <p className="hero-note text-sm text-zinc-600 mt-4">CreatorPay invoicing is available today. The operations agent is in development.</p>
 
         {/* Hero visual — mock dark dashboard */}
         <div className="hero-visual mt-16 max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl shadow-black/60 border border-white/[0.07]">
